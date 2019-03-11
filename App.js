@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity, StatusBar} from 'react-
 
 import SplashScreen from 'react-native-splash-screen';
 import {Navigation} from 'react-native-navigation';
+import Regulations from './screens/Regulations';
 
 export default class App extends Component {
   constructor() {
@@ -29,7 +30,9 @@ render() {
       backgroundColor="#da2626"
       barStyle="light-content"
     />
- 
+
+    <Regulations pagekey={"uniquekey"} title={"Regulamin"} description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}/>
+    
     <View>
       <Image style={styles.imageStyle} source={require('./img/logo.png')} />
     </View>
