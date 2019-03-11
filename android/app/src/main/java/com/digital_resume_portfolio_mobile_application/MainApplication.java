@@ -3,6 +3,7 @@ package com.digital_resume_portfolio_mobile_application;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -37,8 +38,8 @@ public class MainApplication extends NavigationApplication {
         // Add additional packages you require here
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
-            new SplashScreenReactPackage()
-            // eg. new VectorIconsPackage()
+            new SplashScreenReactPackage(),
+            new VectorIconsPackage()
         );
     }
   
