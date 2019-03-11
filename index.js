@@ -2,10 +2,12 @@ import { Navigation } from "react-native-navigation";
 import App from './App';
 import Regulations from './screens/Regulations';
 import Login from './screens/Login';
+import Registration from './screens/Registration';
 
 Navigation.registerComponent('App', () => App);
 Navigation.registerComponent('Regulations', () => Regulations);
 Navigation.registerComponent('Login', () => Login);
+Navigation.registerComponent('Registration', () => Registration);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
