@@ -544,6 +544,10 @@
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-xhdpi-v4\\abc_textfield_default_mtrl_alpha.9.png"
     },
     {
+        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_launch_screen.xml.flat",
+        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\layout\\launch_screen.xml"
+    },
+    {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_textfield_activated_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-mdpi-v4\\abc_textfield_activated_mtrl_alpha.9.png"
     },
@@ -558,10 +562,6 @@
     {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_textfield_default_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-hdpi-v4\\abc_textfield_default_mtrl_alpha.9.png"
-    },
-    {
-        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_btn_radio_to_on_mtrl_000.png.flat",
@@ -594,6 +594,10 @@
     {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21_abc_action_bar_item_background_material.xml.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_background_splash.xml.flat",
+        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\drawable\\background_splash.xml"
     },
     {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_spinner_mtrl_am_alpha.9.png.flat",
@@ -1092,10 +1096,6 @@
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\5b773bec16122cd9b258ecf7b8a9e5c4\\res\\drawable-v21\\item_background.xml"
     },
     {
-        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
-    },
-    {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_ic_go_search_api_material.xml.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable\\abc_ic_go_search_api_material.xml"
     },
@@ -1356,10 +1356,6 @@
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-xxxhdpi-v4\\abc_scrubber_control_to_pressed_mtrl_000.png"
     },
     {
-        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
-    },
-    {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_ic_menu_selectall_mtrl_alpha.png.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-xxhdpi-v4\\abc_ic_menu_selectall_mtrl_alpha.png"
     },
@@ -1432,10 +1428,6 @@
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-mdpi-v4\\abc_spinner_mtrl_am_alpha.9.png"
     },
     {
-        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
-    },
-    {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_textfield_default_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-mdpi-v4\\abc_textfield_default_mtrl_alpha.9.png"
     },
@@ -1450,10 +1442,6 @@
     {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldrtl-mdpi-v17_abc_ic_menu_cut_mtrl_alpha.png.flat",
         "source": "C:\\Users\\Rafal\\.gradle\\caches\\transforms-2\\files-2.1\\4f1d845c600f5d73574a4d2b074060cb\\res\\drawable-ldrtl-mdpi-v17\\abc_ic_menu_cut_mtrl_alpha.png"
-    },
-    {
-        "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
         "merged": "E:\\Virtual_Portfolio_Mobile\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_list_longpressed_holo.9.png.flat",
