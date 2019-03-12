@@ -4,11 +4,12 @@ import Regulations from './screens/Regulations';
 import Login from './screens/Login';
 import Registration from './screens/Registration';
 
+import UserHomeScreen from './screens/UserHomeScreen';
 Navigation.registerComponent('App', () => App);
 Navigation.registerComponent('Regulations', () => Regulations);
 Navigation.registerComponent('Login', () => Login);
 Navigation.registerComponent('Registration', () => Registration);
-
+Navigation.registerComponent('UserHomeScreen', () => UserHomeScreen);
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
     topBar: {
