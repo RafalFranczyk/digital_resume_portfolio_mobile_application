@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity} from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import Icon from 'react-native-vector-icons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import Mybutton from './components/Mybutton';
 
-export default class UserHomeScreen extends Component {
+
+export default class AdminHomeScreen extends Component {
   constructor() {
     super();
     this.state = {
-      isLoading : true,
-      dataSource: null,
     }; 
 }
   render() {
@@ -29,7 +25,7 @@ export default class UserHomeScreen extends Component {
 		  <Image source={require('../img/userPicture.jpg')} style={{width: 100,height: 100,borderRadius: 50,marginTop:20}} />	
 		</View>
         <View>
-            <Text style={styles.welcome}>Hello User</Text>
+            <Text style={styles.welcome}>Hello Admin</Text>
         </View> 
 
         </ScrollView>

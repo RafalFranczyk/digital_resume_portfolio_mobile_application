@@ -4,7 +4,6 @@ import {Navigation} from 'react-native-navigation';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
 
-
 export default class Login extends Component {
   constructor() {
     super();

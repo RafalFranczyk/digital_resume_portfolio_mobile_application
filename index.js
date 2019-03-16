@@ -1,12 +1,13 @@
 import { Navigation } from "react-native-navigation";
 import App from './App';
+
 import Regulations from './screens/Regulations';
 import Login from './screens/Login';
 import Registration from './screens/Registration';
-
 import UserNavigationScreen from './screens/UserNavigationScreen';
 import UserHomeScreen from './screens/UserHomeScreen';
 import routesUser from './screens/routes/routesUser';
+import AdminHomeScreen from './screens/AdminHomeScreen';
 
 Navigation.registerComponent('App', () => App);
 Navigation.registerComponent('Regulations', () => Regulations);
@@ -15,6 +16,7 @@ Navigation.registerComponent('Registration', () => Registration);
 Navigation.registerComponent('UserNavigationScreen', () => UserNavigationScreen);
 Navigation.registerComponent('UserHomeScreen', () => UserHomeScreen);
 Navigation.registerComponent('routesUser', () => routesUser);
+Navigation.registerComponent('AdminHomeScreen', () => AdminHomeScreen);
 
 console.disableYellowBox = true;
 Navigation.events().registerAppLaunchedListener(() => {
