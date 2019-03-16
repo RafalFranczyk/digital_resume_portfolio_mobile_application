@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage,StyleSheet, Text,ScrollView,TouchableOpacity, Image, View,KeyboardAvoidingView, Alert} from 'react-native';
+import {StyleSheet, Text,ScrollView,Image, View,KeyboardAvoidingView, Alert} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
@@ -17,9 +17,7 @@ export default class Login extends Component {
         emailAsync:'',
         id_user:'',
     };
-
   }
-
 newScreen = (window) => {
   Navigation.setStackRoot(this.props.componentId, {
       component: {
@@ -29,9 +27,19 @@ newScreen = (window) => {
 };
 
 login_user =() =>{
-
+  Alert.alert(
+    'Success',
+    'YOU ARE Login SUCCESSFULLY',
+    [
+      {
+       text: 'Ok',
+        onPress: () =>
+          this.newScreen('UserNavigationScreen')
+      },
+    ],
+    { cancelable: false }
+  );
 }
-
 render() {
   return (
     <ScrollView style={styles.container}>
