@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {createAppContainer} from 'react-navigation';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import UserHomeScreen from '../UserHomeScreen';
 import Registration from '../Registration';
-import Login from '../Registration';
+import Login from '../Login';
 
-import Icon from 'react-native-vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
@@ -25,7 +24,8 @@ const TabNavigator = createMaterialBottomTabNavigator(
       } else if (routeName === 'Registration') {
         iconName = `ios-planet`;
       }else if (routeName === 'Login') {
-        iconName = `ios-photos`;}
+        iconName = `ios-photos`;
+      }
       return <IconComponent name={iconName} size={25} color={tintColor} />;
     },
   }),
