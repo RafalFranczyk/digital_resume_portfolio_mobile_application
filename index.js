@@ -1,7 +1,11 @@
 import { Navigation } from "react-native-navigation";
 import App from './App';
+import Regulations from './screens/Regulations';
+
 
 Navigation.registerComponent('App', () => App);
+Navigation.registerComponent('Regulations', () => Regulations);
+
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
