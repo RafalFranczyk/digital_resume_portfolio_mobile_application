@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {AsyncStorage,StyleSheet, Text, View, ListView, ScrollView, Image,Alert,ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View,ScrollView, Image} from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import Mybutton from './components/Mybutton';
+
 
 export default class HomePageUser extends Component {
   constructor() {
@@ -30,7 +30,6 @@ newScreen = (screen) => {
   render() {
       return (
         <ScrollView style={styles.container}>
-
         <View style={{flexDirection: 'row',justifyContent: 'center'}}>	
 		<Image source={{uri:'http://lorempixel.com/100/100/'}} style={{width: 100,height: 100,borderRadius: 50,marginTop:20}} />	
 		</View>
