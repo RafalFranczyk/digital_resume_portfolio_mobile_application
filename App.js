@@ -5,12 +5,14 @@ import SplashScreen from 'react-native-splash-screen';
 import {Navigation} from 'react-native-navigation';
 import Regulations from './screens/Regulations';
 
+
 export default class App extends Component {
   constructor() {
     super()
 
     this.state = {};
 }
+
 async componentDidMount() {
     SplashScreen.hide();
 };
@@ -22,6 +24,7 @@ newScreen = (window) => {
       }
   });
 };
+
 
 render() {
   return (
