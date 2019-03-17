@@ -4,6 +4,7 @@ ADDED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_applicati
 INJECTED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\android\app\src\main\AndroidManifest.xml:1:1-36:12
 INJECTED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\android\app\src\main\AndroidManifest.xml:1:1-36:12
 INJECTED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\android\app\src\main\AndroidManifest.xml:1:1-36:12
+MERGED from [:react-native-gesture-handler] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-vector-icons] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-splash-screen] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-splash-screen\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-14:12
 MERGED from [:react-native-navigation] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-navigation\lib\android\app\build\intermediates\merged_manifests\reactNative57_5Debug\processReactNative57_5DebugManifest\merged\AndroidManifest.xml:2:1-17:12
@@ -159,6 +160,8 @@ uses-sdk
 INJECTED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\android\app\src\main\AndroidManifest.xml
 INJECTED from E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\android\app\src\main\AndroidManifest.xml
+MERGED from [:react-native-gesture-handler] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-gesture-handler] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-vector-icons] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-splash-screen] E:\Virtual_Portfolio_Mobile\digital_resume_portfolio_mobile_application\node_modules\react-native-splash-screen\android\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:7:5-9:41
