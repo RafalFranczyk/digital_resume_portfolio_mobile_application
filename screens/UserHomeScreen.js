@@ -1,20 +1,31 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity} from 'react-native';
-import {Navigation} from 'react-native-navigation';
-import Icon from 'react-native-vector-icons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity,BackHandler,ToastAndroid} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import Mybutton from './components/Mybutton';
 
 export default class UserHomeScreen extends Component {
   constructor() {
     super();
+    this.backButtonListener = null;
+    this.lastBackButtonPress = null;
     this.state = {
       isLoading : true,
       dataSource: null,
     }; 
 }
-  render() {
+
+componentDidMount() {
+      this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
+          if (this.lastBackButtonPress + 2000 >= new Date().getTime()) {
+              BackHandler.exitApp();
+              return true;
+          }
+          ToastAndroid.show('Click two times very fast to close the app :)', ToastAndroid.SHORT);
+          this.lastBackButtonPress = new Date().getTime();
+          return true;
+      });
+}
+
+render() {
       return (
         <ScrollView style={styles.container}>
         <View style={styles.toolbar}>
