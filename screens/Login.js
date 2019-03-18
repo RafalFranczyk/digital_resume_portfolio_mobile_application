@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text,ScrollView,Image, View,KeyboardAvoidingView, Alert,AsyncStorage} from 'react-native';
+import {StyleSheet, Text,ScrollView,Image, View,KeyboardAvoidingView, Alert,AsyncStorage,ToastAndroid} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
@@ -50,44 +50,25 @@ login_user =() =>{
                           AsyncStorage.setItem('token',responseJson.token);
                           AsyncStorage.setItem('role',responseJson.role[0])
                             if(responseJson.role[0] === 'ROLE_USER'){
-                              Alert.alert(
-                                'Success',
-                                'ITS OK USER',
-                                [
-                                  {
-                                   text: 'Ok',
-                                    onPress: () =>
-                                      this.newScreen('routesUser')
-                                  },
-                                ],
-                                { cancelable: false }
-                              );
+                                this.newScreen('routesUser');
+                                ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT)
+
                               }else if(responseJson.role[0] === 'ROLE_ADMIN'){
-                                Alert.alert(
-                                  'Success',
-                                  'ITS OK ADMIN',
-                                  [
-                                    {
-                                     text: 'Ok',
-                                      onPress: () =>
-                                        this.newScreen('routesAdmin')
-                                    },
-                                  ],
-                                  { cancelable: false }
-                                );
+                                this.newScreen('routesAdmin');
+                                ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT)
                               }
                         } else if (responseJson.statusCode === '401'){
-                          alert('Login FAILED ' + responseJson.statusCode + ' ' + responseJson.statusMessage);
+                          ToastAndroid.show('Login FAILED ' + responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
                           }
                           else if (responseJson.status === '400'){
-                            alert(responseJson.status + ' ' + responseJson.error)
+                            ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
                           }
                     })
-      } else {
-        alert('PLEASE ENTER YOUR PASSWORD');
+      }else {
+        ToastAndroid.show('Please Enter your password :)', ToastAndroid.SHORT);
       }
-    } else {
-      alert('PLEASE ENTER YOUR USERNAME');
+    }else {
+      ToastAndroid.show('Please Enter your username :)', ToastAndroid.SHORT);
     }
   };  
 render() {
