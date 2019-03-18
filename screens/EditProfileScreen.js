@@ -39,7 +39,7 @@ validate(text,type)
 {
   birthDatePattern = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/
 
-  phoneNumberPattern = /^(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)$/
+  phoneNumberPattern = /^([0-9]{9})$/
 
   if (type === 'birthDate')
   {

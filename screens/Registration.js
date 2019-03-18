@@ -4,6 +4,16 @@ import {Navigation} from 'react-native-navigation';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
 
+import {
+  Input,
+  ThemeProvider,
+} from 'react-native-elements';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 export default class Registration extends Component {
     constructor(props) {
         super(props);
@@ -88,48 +98,100 @@ register_user = () => {
       }else{ToastAndroid.show('Please enter your password', ToastAndroid.SHORT);}
     }else{ToastAndroid.show('Please enter your email', ToastAndroid.SHORT);}
   }else{ToastAndroid.show('Please enter your username', ToastAndroid.SHORT);}
-
 };  
+
+backToHome = () => {
+  this.newScreen('App');
+  ToastAndroid.show('Welcome in Home Screen', ToastAndroid.SHORT)
+}; 
+
   render() {
     return (
-        <View style={styles.container}>
+      <ScrollView style={styles.container}>
       <View style={styles.toolbar}>
-      <Text style={styles.textTab}>Register</Text>
+          <TouchableOpacity style={styles.buttonLogout} onPress={this.backToHome.bind(this)}>
+              <MaterialIcons style={styles.iconLogout} name={'keyboard-backspace'} size={35} color={'white'}/>
+          </TouchableOpacity>
+        <Text style={{fontWeight: 'bold',fontSize: 30,color: '#ffffff',textAlign:'center',marginTop:10,marginBottom:10}}>Registration</Text>
+
       </View>
       <View style={styles.registerIcon}>
-        <Image source={require('../img/registerIcon.png')} />
+      <Entypo style={styles.iconLogout} name={'documents'} size={70} color={'white'}/>
       </View>
-      <ScrollView keyboardShouldPersistTaps="handled">
-          <KeyboardAvoidingView
-            behavior="padding"
-            style={{ flex: 1, justifyContent: 'space-between' }}>
-            
-            <Mytextinput
-              placeholder="Enter Username"
-              onChangeText={username => this.setState({ username })}
-            />
-            <Mytextinput
-              placeholder="Enter Email"
-              onChangeText={email => this.setState({ email })}
-            />
-            <Mytextinput
-              secureTextEntry={true}
-              placeholder="Enter Password"
-              onChangeText={password => this.setState({ password })}
-            />
-            <Mytextinput
-              secureTextEntry={true}
-              placeholder="Confirm Password"
-              onChangeText={confirmPassword => this.setState({ confirmPassword })}
-            />      
-            <Mybutton
+
+          <ThemeProvider
+            theme={{
+              Input: {
+                containerStyle: {
+                },
+                inputContainerStyle: {
+                  borderRadius: 40,
+                  borderWidth: 1,
+                  borderColor: 'rgba(110, 120, 170, 1)',
+                  height: 50,
+                  marginVertical: 10,
+                },
+                placeholderTextColor: 'rgba(110, 120, 170, 1)',
+                inputStyle: {
+                  marginLeft: 10,
+                  color: 'white',
+                },
+                keyboardAppearance: 'light',
+                blurOnSubmit: false,
+              },
+            }}
+          >
+            <View style={{alignItems: 'center', paddingBottom: 30,}}>
+              <Input
+                leftIcon={<SimpleIcon name="user" color="rgba(110, 120, 170, 1)" size={25}/>}
+                placeholder="Username"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                onChangeText={username => this.setState({ username })}
+              />
+
+              <Input leftIcon={<MaterialIcon name="email-outline" color="rgba(110, 120, 170, 1)" size={25}/>}
+                placeholder="Email"
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                onChangeText={email => this.setState({ email })}
+              />
+
+              <Input leftIcon={<SimpleIcon name="lock" color="rgba(110, 120, 170, 1)" size={25} />}
+                placeholder="Password"
+                autoCapitalize="none"
+                secureTextEntry={true}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="next"
+                onChangeText={password => this.setState({ password })}
+              />
+
+
+              <Input leftIcon={<SimpleIcon name="lock" color="rgba(110, 120, 170, 1)"size={25}/>}
+                placeholder="Confirm Password"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={true}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                onChangeText={confirmPassword => this.setState({ confirmPassword })}
+              />
+
+            </View>
+          </ThemeProvider>
+
+          <Mybutton
               title="Submit"
               customClick={this.register_user.bind(this)}
             />
-          </KeyboardAvoidingView>
-          
-        </ScrollView>
-      </View>
+
+       </ScrollView>
     );
   }
 }
@@ -137,8 +199,21 @@ register_user = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: 'rgba(46, 50, 72, 1)',
   },
+
+  buttonLogout:{
+    marginLeft:20,
+    marginTop:12,
+    marginBottom:10,
+    paddingRight:40,
+  },
+  loginIcon:{
+    marginTop: 20,
+    alignSelf: 'center',
+    marginBottom:20,
+  },
+
   registerIcon:{
     marginTop: 10,
     alignSelf: 'center'
@@ -146,6 +221,7 @@ const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#da2626',
     alignItems: 'center',
+    flexDirection:"row",
   },
   textTab: {
     fontWeight: 'bold',
