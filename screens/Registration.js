@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage,StyleSheet, Text,ScrollView,TouchableOpacity, Image, View,KeyboardAvoidingView, Alert } from 'react-native';
+import {AsyncStorage,StyleSheet, Text,ScrollView,TouchableOpacity, Image, View,KeyboardAvoidingView,ToastAndroid} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
@@ -75,7 +75,7 @@ register_user = () => {
                         if (responseJson.statusCode === '200') {
                           AsyncStorage.setItem('token',responseJson.token);
                           AsyncStorage.setItem('role',responseJson.role);
-                          this.newScreen('routesUser');
+                          this.newScreen('EditProfileScreen');
                           ToastAndroid.show('YOU ARE REGISTERED SUCCESSFULLY', ToastAndroid.SHORT);
                         }else if(responseJson.statusCode === '409') {
                             ToastAndroid.show('REGISTRATION FAILED '+ responseJson.Code + ' ' + responseJson.statusMessage + ' ' + responseJson.message, ToastAndroid.SHORT);
@@ -83,21 +83,11 @@ register_user = () => {
                             ToastAndroid.show(responseJson.error + ' ' + responseJson.message, ToastAndroid.SHORT);
                           }
                     })            
-              }else{
-                ToastAndroid.show('Invalid email address', ToastAndroid.SHORT);
-              }
-            }else{
-              ToastAndroid.show('Password are not the same', ToastAndroid.SHORT);
-            }
-      }else {
-        ToastAndroid.show('Please enter your password', ToastAndroid.SHORT);
-      }
-    }else {
-      ToastAndroid.show('Please enter your email', ToastAndroid.SHORT);
-    }
-  }else{
-  ToastAndroid.show('Please enter your username', ToastAndroid.SHORT);
-  }
+              }else{ToastAndroid.show('Invalid email address', ToastAndroid.SHORT);}
+            }else{ToastAndroid.show('Password are not the same', ToastAndroid.SHORT);}
+      }else{ToastAndroid.show('Please enter your password', ToastAndroid.SHORT);}
+    }else{ToastAndroid.show('Please enter your email', ToastAndroid.SHORT);}
+  }else{ToastAndroid.show('Please enter your username', ToastAndroid.SHORT);}
 
 };  
   render() {

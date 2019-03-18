@@ -44,19 +44,20 @@ login_user =() =>{
                   }).then((response) => response.json())
                       .then((responseJson)=> {
                         if (responseJson.statusCode === '200') {
-                          console.log(typeof responseJson.role)
-                          console.log(responseJson.role)
-                          console.log(responseJson.role[0])
                           AsyncStorage.setItem('token',responseJson.token);
-                          AsyncStorage.setItem('role',responseJson.role[0])
+                          AsyncStorage.setItem('role',responseJson.role[0]);
+                          if(responseJson.profile === 'null'){
+                            this.newScreen('EditProfileScreen');
+                            ToastAndroid.show('Your Profile is Empty , Please enter details', ToastAndroid.SHORT);
+                          }else{
                             if(responseJson.role[0] === 'ROLE_USER'){
                                 this.newScreen('routesUser');
-                                ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT)
-
+                                ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT);
                               }else if(responseJson.role[0] === 'ROLE_ADMIN'){
                                 this.newScreen('routesAdmin');
-                                ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT)
+                                ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT);
                               }
+                            }
                         } else if (responseJson.statusCode === '401'){
                           ToastAndroid.show('Login FAILED ' + responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
                           }
