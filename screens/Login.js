@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text,ScrollView,Image, View,KeyboardAvoidingView, Alert} from 'react-native';
+import {StyleSheet, Text,ScrollView,Image, View,KeyboardAvoidingView, Alert,AsyncStorage} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
@@ -26,19 +26,70 @@ newScreen = (window) => {
 };
 
 login_user =() =>{
-  Alert.alert(
-    'Success',
-    'YOU ARE Login SUCCESSFULLY',
-    [
-      {
-       text: 'Ok',
-        onPress: () =>
-          this.newScreen('UserNavigationScreen')
-      },
-    ],
-    { cancelable: false }
-  );
-}
+  const { username } = this.state;
+    const { password } = this.state;
+ 
+    if (username) {
+      if (password) {
+          fetch('http://www.digital-resume-portfolio.pl/auth/signin', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    username: username,
+                    password: password
+                    })
+                  }).then((response) => response.json())
+                      .then((responseJson)=> {
+                        if (responseJson.statusCode === '200') {
+                          console.log(typeof responseJson.role)
+                          console.log(responseJson.role)
+                          console.log(responseJson.role[0])
+                          AsyncStorage.setItem('token',responseJson.token);
+                          AsyncStorage.setItem('role',responseJson.role[0])
+                            if(responseJson.role[0] === 'ROLE_USER'){
+                              Alert.alert(
+                                'Success',
+                                'ITS OK USER',
+                                [
+                                  {
+                                   text: 'Ok',
+                                    onPress: () =>
+                                      this.newScreen('routesUser')
+                                  },
+                                ],
+                                { cancelable: false }
+                              );
+                              }else if(responseJson.role[0] === 'ROLE_ADMIN'){
+                                Alert.alert(
+                                  'Success',
+                                  'ITS OK ADMIN',
+                                  [
+                                    {
+                                     text: 'Ok',
+                                      onPress: () =>
+                                        this.newScreen('routesAdmin')
+                                    },
+                                  ],
+                                  { cancelable: false }
+                                );
+                              }
+                        } else if (responseJson.statusCode === '401'){
+                          alert('Login FAILED ' + responseJson.statusCode + ' ' + responseJson.statusMessage);
+                          }
+                          else if (responseJson.status === '400'){
+                            alert(responseJson.status + ' ' + responseJson.error)
+                          }
+                    })
+      } else {
+        alert('PLEASE ENTER YOUR PASSWORD');
+      }
+    } else {
+      alert('PLEASE ENTER YOUR USERNAME');
+    }
+  };  
 render() {
   return (
     <ScrollView style={styles.container}>

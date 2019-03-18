@@ -8,6 +8,7 @@ import UserNavigationScreen from './screens/UserNavigationScreen';
 import UserHomeScreen from './screens/UserHomeScreen';
 import routesUser from './screens/routes/routesUser';
 import AdminHomeScreen from './screens/AdminHomeScreen';
+import routesAdmin from "./screens/routes/routesAdmin";
 
 Navigation.registerComponent('App', () => App);
 Navigation.registerComponent('Regulations', () => Regulations);
@@ -17,6 +18,7 @@ Navigation.registerComponent('UserNavigationScreen', () => UserNavigationScreen)
 Navigation.registerComponent('UserHomeScreen', () => UserHomeScreen);
 Navigation.registerComponent('routesUser', () => routesUser);
 Navigation.registerComponent('AdminHomeScreen', () => AdminHomeScreen);
+Navigation.registerComponent('routesAdmin', () => routesAdmin);
 
 console.disableYellowBox = true;
 Navigation.events().registerAppLaunchedListener(() => {
