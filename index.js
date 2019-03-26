@@ -11,6 +11,9 @@ import AdminHomeScreen from './screens/AdminHomeScreen';
 import routesAdmin from "./screens/routes/routesAdmin";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import UpdateProfileScreen from "./screens/UpdateProfileScreen";
+import CVListScreen from "./screens/CVListScreen";
+import PortfolioListScreen from "./screens/PortfolioListScreen";
+import PortfolioModifyScreen from "./screens/PortfolioModifyScreen";
 
 Navigation.registerComponent('App', () => App);
 Navigation.registerComponent('Regulations', () => Regulations);
@@ -23,6 +26,9 @@ Navigation.registerComponent('AdminHomeScreen', () => AdminHomeScreen);
 Navigation.registerComponent('routesAdmin', () => routesAdmin);
 Navigation.registerComponent('EditProfileScreen', () => EditProfileScreen);
 Navigation.registerComponent('UpdateProfileScreen',() => UpdateProfileScreen);
+Navigation.registerComponent('CVListScreen',() => CVListScreen);
+Navigation.registerComponent('PortfolioListScreen', () => PortfolioListScreen);
+Navigation.registerComponent('PortfolioModifyScreen',()=> PortfolioModifyScreen)
 
 console.disableYellowBox = true;
 Navigation.events().registerAppLaunchedListener(() => {
