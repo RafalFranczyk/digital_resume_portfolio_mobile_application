@@ -1,24 +1,74 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity,BackHandler,ToastAndroid,AsyncStorage,Alert} from 'react-native';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Navigation} from 'react-native-navigation';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 
 
-export default class AdminHomeScreen extends Component {
+
+export default class UserHomeScreen extends Component {
   constructor() {
     super();
+    this.backButtonListener = null;
+    this.lastBackButtonPress = null;
     this.state = {
+      isLoading : true,
+      dataSource: null,
     }; 
 }
-  render() {
+
+componentDidMount() {
+      this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
+          if (this.lastBackButtonPress + 2000 >= new Date().getTime()) {
+              BackHandler.exitApp();
+              return true;
+          }
+          ToastAndroid.show('Click two times very fast to close the app :)', ToastAndroid.SHORT);
+          this.lastBackButtonPress = new Date().getTime();
+          return true;
+      });
+}
+
+newScreen = (screen) => {
+  Navigation.mergeOptions('drawerId', {
+      sideMenu: {
+          left: {
+              visible: false
+          }
+      }
+  });
+
+  Navigation.setStackRoot('MAIN_STACK',{
+      component: {
+          name: screen
+      }
+  })
+};
+
+logout = () => {
+  AsyncStorage.removeItem('token'),
+  AsyncStorage.removeItem('role'),
+  AsyncStorage.removeItem('email'),
+  this.newScreen('App');
+  ToastAndroid.show('Logout :)', ToastAndroid.SHORT)
+}; 
+
+sectionProfileUpdate = () => {
+  this.newScreen('UpdateProfileScreen');
+  ToastAndroid.show('go do it  :)', ToastAndroid.SHORT)
+}
+
+render() {
       return (
         <ScrollView style={styles.container}>
         <View style={styles.toolbar}>
-          <TouchableOpacity style={styles.buttonLogout} >
+          <TouchableOpacity style={styles.buttonLogoutLeft} onPress={this.logout.bind(this)}>
               <SimpleLineIcons style={styles.iconLogout} name={'logout'} size={25} color={'white'}/>
           </TouchableOpacity>
           <Text style={styles.textTab}>Home Screen</Text>
-          
+          <TouchableOpacity style={styles.buttonLogoutRight} onPress={this.sectionProfileUpdate.bind(this)}>
+              <AntDesign style={styles.iconLogout} name={'edit'} size={25} color={'white'}/>
+          </TouchableOpacity>
         </View>
 
     <View style={{flexDirection: 'row',justifyContent: 'center'}}>	
@@ -26,8 +76,7 @@ export default class AdminHomeScreen extends Component {
 		</View>
         <View>
             <Text style={styles.welcome}>Hello Admin</Text>
-        </View> 
-
+        </View>
         </ScrollView>
       );
     }
@@ -37,10 +86,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  buttonLogout:{
+  buttonLogoutLeft:{
     marginLeft:20,
     marginTop:12,
     paddingRight:40,
+  },
+  buttonLogoutRight:{
+    marginTop:12,
+    paddingLeft:30,
+    marginRight:20,
   },
   iconLogout:{
     fontSize: 36,
