@@ -23,8 +23,8 @@ export default class EditProfileScreen extends Component {
     };
 }
 async componentWillMount(){
-    tokenAsync = await AsyncStorage.getItem('token')
-    roleAsync = await AsyncStorage.getItem('role')
+    tokenAsync = await AsyncStorage.getItem('token');
+    roleAsync = await AsyncStorage.getItem('role');
   }
 
 newScreen = (window) => {
@@ -103,13 +103,13 @@ profile_user = () => {
                                             }).then((response) => response.json())
                                             .then((responseJson)=> {
                                             if (responseJson.statusCode === '200') {
-                                            if(roleAsync === 'ROLE_USER'){
+                                              if(roleAsync === 'ROLE_USER'){
                                                 this.newScreen('routesUser')
                                                 ToastAndroid.show("Success Profile Update User", ToastAndroid.SHORT);
-                                            }else if(roleAsync === 'ROLE_ADMIN'){
+                                              }else if(roleAsync === 'ROLE_ADMIN'){
                                                 this.newScreen('routesAdmin');
                                                 ToastAndroid.show("Success Profile Update Android", ToastAndroid.SHORT);
-                                            }
+                                              }
                                             }else if(responseJson.status === '400'){
                                                 ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
                                             }else if(responseJson.statusCode === '409'){

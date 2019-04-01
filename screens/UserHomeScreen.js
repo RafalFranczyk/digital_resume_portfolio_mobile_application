@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity,BackHandler,ToastAndroid,AsyncStorage,Alert} from 'react-native';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Navigation} from 'react-native-navigation';
+
+
+
 export default class UserHomeScreen extends Component {
   constructor() {
     super();
@@ -44,19 +48,27 @@ newScreen = (screen) => {
 logout = () => {
   AsyncStorage.removeItem('token'),
   AsyncStorage.removeItem('role'),
+  AsyncStorage.removeItem('email'),
   this.newScreen('App');
   ToastAndroid.show('Logout :)', ToastAndroid.SHORT)
 }; 
+
+sectionProfileUpdate = () => {
+  this.newScreen('UpdateProfileScreen');
+  ToastAndroid.show('go do it  :)', ToastAndroid.SHORT)
+}
 
 render() {
       return (
         <ScrollView style={styles.container}>
         <View style={styles.toolbar}>
-          <TouchableOpacity style={styles.buttonLogout} onPress={this.logout.bind(this)}>
+          <TouchableOpacity style={styles.buttonLogoutLeft} onPress={this.logout.bind(this)}>
               <SimpleLineIcons style={styles.iconLogout} name={'logout'} size={25} color={'white'}/>
           </TouchableOpacity>
           <Text style={styles.textTab}>Home Screen</Text>
-          
+          <TouchableOpacity style={styles.buttonLogoutRight} onPress={this.sectionProfileUpdate.bind(this)}>
+              <AntDesign style={styles.iconLogout} name={'edit'} size={25} color={'white'}/>
+          </TouchableOpacity>
         </View>
 
     <View style={{flexDirection: 'row',justifyContent: 'center'}}>	
@@ -64,8 +76,7 @@ render() {
 		</View>
         <View>
             <Text style={styles.welcome}>Hello User</Text>
-        </View> 
-
+        </View>
         </ScrollView>
       );
     }
@@ -75,10 +86,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  buttonLogout:{
+  buttonLogoutLeft:{
     marginLeft:20,
     marginTop:12,
     paddingRight:40,
+  },
+  buttonLogoutRight:{
+    marginTop:12,
+    paddingLeft:30,
+    marginRight:20,
   },
   iconLogout:{
     fontSize: 36,

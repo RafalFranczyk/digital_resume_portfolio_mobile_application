@@ -85,6 +85,7 @@ register_user = () => {
                         if (responseJson.statusCode === '200') {
                           AsyncStorage.setItem('token',responseJson.token);
                           AsyncStorage.setItem('role',responseJson.role);
+                          AsyncStorage.setItem('email',email);
                           this.newScreen('EditProfileScreen');
                           ToastAndroid.show('YOU ARE REGISTERED SUCCESSFULLY', ToastAndroid.SHORT);
                         }else if(responseJson.statusCode === '409') {

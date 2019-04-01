@@ -27,6 +27,7 @@ export default class Login extends Component {
         emailPattern:'',
         emailAsync:'',
         id_user:'',
+        usernameOrEmail:'',
     };
   }
 newScreen = (window) => {
@@ -38,10 +39,10 @@ newScreen = (window) => {
 };
 
 login_user =() =>{
-  const { username } = this.state;
+  const { usernameOrEmail } = this.state;
     const { password } = this.state;
  
-    if (username) {
+    if (usernameOrEmail) {
       if (password) {
           fetch('http://www.digital-resume-portfolio.pl/auth/signin', {
                   method: 'POST',
@@ -50,7 +51,7 @@ login_user =() =>{
                     'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
-                    username: username,
+                    usernameOrEmail: usernameOrEmail,
                     password: password
                     })
                   }).then((response) => response.json())
@@ -58,6 +59,8 @@ login_user =() =>{
                         if (responseJson.statusCode === '200') {
                           AsyncStorage.setItem('token',responseJson.token);
                           AsyncStorage.setItem('role',responseJson.role[0]);
+                          AsyncStorage.setItem('email',usernameOrEmail);
+                          AsyncStorage.setItem('password',password);
                           if(responseJson.profile === 'null'){
                             this.newScreen('EditProfileScreen');
                             ToastAndroid.show('Your Profile is Empty , Please enter details', ToastAndroid.SHORT);
@@ -70,19 +73,11 @@ login_user =() =>{
                                 ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT);
                               }
                             }
-                        } else if (responseJson.statusCode === '401'){
-                          ToastAndroid.show('Login FAILED ' + responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
-                          }
-                          else if (responseJson.status === '400'){
-                            ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
-                          }
+                        }else if (responseJson.statusCode === '401'){ToastAndroid.show('Login FAILED ' + responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+                      }else if (responseJson.status === '400'){ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);}
                     })
-      }else {
-        ToastAndroid.show('Please Enter your password :)', ToastAndroid.SHORT);
-      }
-    }else {
-      ToastAndroid.show('Please Enter your username :)', ToastAndroid.SHORT);
-    }
+      }else {ToastAndroid.show('Please Enter your password :)', ToastAndroid.SHORT);}
+    }else{ToastAndroid.show('Please Enter your username :)', ToastAndroid.SHORT);}
 };
 
 backToHome = () => {
@@ -98,10 +93,13 @@ render() {
               <MaterialIcons style={styles.iconLogout} name={'keyboard-backspace'} size={35} color={'white'}/>
           </TouchableOpacity>
         <Text style={{fontWeight: 'bold',fontSize: 30,color: '#ffffff',textAlign:'center',marginTop:10,marginBottom:10}}>Login</Text>
+
+
       </View>
       <View style={styles.loginIcon}>
         <Ionicons style={styles.iconLogout} name={'ios-person'} size={70} color={'white'}/>
       </View>
+      
           <View style={{width:100+"%",alignItems: 'center'}}>
             <View style={styles.overlay}>
               <View style={styles.triangleLeft} />
@@ -119,7 +117,7 @@ render() {
                   marginRight: 10,
                 }}
                 containerStyle={{ paddingHorizontal: 0 }}
-                placeholder="Email"
+                placeholder="Email or Username"
                 placeholderTextColor="black"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -127,7 +125,7 @@ render() {
                 keyboardType="email-address"
                 returnKeyType="next"
                 blurOnSubmit={false}
-                onChangeText={username => this.setState({ username })}
+                onChangeText={usernameOrEmail => this.setState({ usernameOrEmail})}
               />
               <View style={styles.triangleRight} />
             </View>
