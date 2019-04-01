@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, ListView, View, ScrollView, Image, TouchableOpacity, BackHandler, ToastAndroid, AsyncStorage, Alert, ActivityIndicator } from 'react-native';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { ActivityIndicator, Alert, AsyncStorage, FlatList, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Button, Card, Icon, Input } from 'react-native-elements';
+import Overlay from 'react-native-modal-overlay';
 import { Navigation } from 'react-native-navigation';
-import { Card, Button, Icon } from 'react-native-elements'
-//import ActionButton from 'react-native-circular-action-menu';
-import ActionButton from 'react-native-action-button';
-import IconVector from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
+import Mybutton from './components/Mybutton';
 
 export default class CVListScreen extends Component {
   constructor() {
@@ -16,16 +15,15 @@ export default class CVListScreen extends Component {
     this.state = {
       isLoading: true,
       dataSource: [],
-      dataSource1: [],
-      refreshing: false,
+      name: '',
+      description: '',
+      modalVisible: false,
     };
   }
 
   async componentDidMount() {
     tokenAsync = await AsyncStorage.getItem('token');
-    let resumes = [];
     console.log(tokenAsync);
-
     return fetch('http://www.digital-resume-portfolio.pl/resumes', {
       method: 'GET',
       headers: {
@@ -47,7 +45,6 @@ export default class CVListScreen extends Component {
         console.log(error)
       });
   }
-
   newScreen = (screen) => {
     Navigation.mergeOptions('drawerId', {
       sideMenu: {
@@ -62,8 +59,83 @@ export default class CVListScreen extends Component {
         name: screen
       }
     })
-
   };
+
+  addResume = () => {
+    onClose = () => this.setState({ modalVisible: false });
+    console.log('token' + tokenAsync)
+    fetch('http://www.digital-resume-portfolio.pl/resume', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenAsync
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        description: this.state.description
+      })
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.statusCode === '200') {
+          this.componentDidMount(),
+            ToastAndroid.show('Add new Resumes :)', ToastAndroid.SHORT);
+        } else if (responseJson.status === '500') {
+          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+  onClose = () => this.setState({ modalVisible: false });
+
+  alertAddResume = () => this.setState({ modalVisible: true });
+
+  onClick(event) {
+    this.onClose();
+    this.addResume();
+  }
+
+  handlerLongClick = (value) => {
+    Alert.alert(
+      'Delete Resume',
+      'Are you sure ? ',
+      [
+        {
+          text: 'Ok',
+          onPress: () =>
+            this.deleteResume(value)
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  deleteResume = (value) => {
+    fetch('http://www.digital-resume-portfolio.pl/resume/' + value, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenAsync
+      }
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        if (responseJson.statusCode === '200') {
+          this.componentDidMount(),
+            ToastAndroid.show('Delete Resume :)', ToastAndroid.SHORT);
+        } else if (responseJson.status === '500') {
+          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+
+  }
 
   render() {
     if (this.state.isLoading) {
@@ -77,30 +149,99 @@ export default class CVListScreen extends Component {
         <ScrollView style={styles.container}>
           <View style={styles.toolbar}>
             <Text style={styles.textTab}>Resumes</Text>
-            <TouchableOpacity style={styles.buttonExportPdf}>
+            <TouchableOpacity style={styles.buttonExportPdf} onPress={this.alertAddResume.bind(this)}>
               <AntDesign style={styles.iconAddResumes} name={'pluscircleo'} size={35} color={'white'} />
             </TouchableOpacity>
           </View>
 
-          <View>
+          <Overlay visible={this.state.modalVisible} onClose={this.onClose} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Name of your new Resume</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Name of Resume"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(name) => this.setState({ name })}
+              />
+              <View style={styles.triangleRight} />
 
+              <View style={styles.triangleLeft} />
+              <Text>Enter Description about your new Resume</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Description"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(description) => this.setState({ description })}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Add Resume"
+              customClick={this.onClick.bind(this)}
+            />
+          </Overlay>
+
+          <View>
             <FlatList
               data={this.state.dataSource}
-              extraData={this.state}
-              renderItem={({ item }) => <Card
-                title={item.name}
-                image={require('../img/resumes.jpg')}>
-                <Text style={{ marginBottom: 10 }}>
-                  {item.description}
-                </Text>
-                <Button
-                  icon={<Icon name='code' color='#ffffff' />}
-                  backgroundColor='#03A9F4'
-                  buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-                  title='VIEW NOW' />
-              </Card>}
+              renderItem={({ item }) =>
+                <TouchableOpacity
+                  onLongPress={() => this.handlerLongClick(item.id)}
+                  activeOpacity={0.6}>
+                  <Card
+                    title={item.name}
+                    image={require('../img/resumes.jpg')}>
+                    <Text style={{ marginBottom: 10 }}>
+                      {item.description}
+                    </Text>
+                    <Button
+                      icon={<Icon name='code' color='#ffffff' />}
+                      backgroundColor='#03A9F4'
+                      buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+                      title='VIEW NOW' />
+                  </Card>
+                </TouchableOpacity>}
+              keyExtractor={(item, index) => index}
             />
-
           </View>
         </ScrollView>
       );
@@ -139,5 +280,31 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 30 + "%",
+  },
+  triangleLeft: {
+    position: 'absolute',
+    left: -20,
+    bottom: 0,
+    width: 0,
+    height: 0,
+    borderRightWidth: 20,
+    borderRightColor: 'white',
+    borderBottomWidth: 25,
+    borderBottomColor: 'transparent',
+    borderTopWidth: 25,
+    borderTopColor: 'transparent',
+  },
+  triangleRight: {
+    position: 'absolute',
+    right: -20,
+    top: 0,
+    width: 0,
+    height: 0,
+    borderLeftWidth: 20,
+    borderLeftColor: 'white',
+    borderBottomWidth: 25,
+    borderBottomColor: 'transparent',
+    borderTopWidth: 25,
+    borderTopColor: 'transparent',
   },
 });
