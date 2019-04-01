@@ -1,33 +1,59 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import SplashScreen from 'react-native-splash-screen';
+import {Navigation} from 'react-native-navigation';
+import Regulations from './screens/Regulations';
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
+
+export default class App extends Component {
+  constructor() {
+    super()
+
+    this.state = {};
+}
+
+async componentDidMount() {
+    SplashScreen.hide();
+};
+
+newScreen = (window) => {
+  Navigation.push(this.props.componentId, {
+      component: {
+          name: window
+      }
+  });
+};
+
+
+render() {
+  return (
+<View style={styles.container}>
+    <StatusBar
+      backgroundColor="#da2626"
+      barStyle="light-content"
+    />
+
+    <Regulations pagekey={"uniquekey"} title={"Regulamin"} description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}/>
+    
+    <View>
+      <Image style={styles.imageStyle} source={require('./img/logo.png')} />
+    </View>
+
+    <Text style={styles.welcome}>Welcome to Portfolio</Text>
+    <Text style={styles.fontsroboto}>Log in to create a CV or put your files on the server. </Text>
+        <Text></Text>
+        <Text></Text>
+          <TouchableOpacity  style={styles.button} onPress={() => this.newScreen('Login')}>
+                      <Text style={styles.textButton} >Log in</Text>
+          </TouchableOpacity>
+        <Text></Text>
+          <TouchableOpacity  style={styles.button} onPress={() => this.newScreen('Registration')}>
+                      <Text style={styles.textButton} >Register</Text>
+          </TouchableOpacity>
+  </View>
+  );
+}
 }
 
 const styles = StyleSheet.create({
@@ -35,16 +61,43 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#4f6d7a',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 26,
     textAlign: 'center',
     margin: 10,
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
+  fontsroboto:{
+    fontFamily: 'Roboto-Regular',
+    color: '#ffffff',
+    fontSize: 17,
+    marginLeft: 30,
+  },
+  button:{
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginLeft: 10,
+    height: 50,
+    width: 350,
+    borderWidth: 2,
+    borderRadius: 9,
+    borderColor: '#ffffff',
+},
+
+  textButton:{
+  fontSize: 20,
+  color: '#da2626',
+  fontWeight: 'bold',
+},
+
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: '#F5FCFF',
     marginBottom: 5,
   },
 });
