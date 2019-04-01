@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity,BackHandler,ToastAndroid} from 'react-native';
+import {StyleSheet, Text, View,ScrollView, Image,TouchableOpacity,BackHandler,ToastAndroid,AsyncStorage,Alert} from 'react-native';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-
+import {Navigation} from 'react-native-navigation';
 export default class UserHomeScreen extends Component {
   constructor() {
     super();
@@ -25,11 +25,34 @@ componentDidMount() {
       });
 }
 
+newScreen = (screen) => {
+  Navigation.mergeOptions('drawerId', {
+      sideMenu: {
+          left: {
+              visible: false
+          }
+      }
+  });
+
+  Navigation.setStackRoot('MAIN_STACK',{
+      component: {
+          name: screen
+      }
+  })
+};
+
+logout = () => {
+  AsyncStorage.removeItem('token'),
+  AsyncStorage.removeItem('role'),
+  this.newScreen('App');
+  ToastAndroid.show('Logout :)', ToastAndroid.SHORT)
+}; 
+
 render() {
       return (
         <ScrollView style={styles.container}>
         <View style={styles.toolbar}>
-          <TouchableOpacity style={styles.buttonLogout} >
+          <TouchableOpacity style={styles.buttonLogout} onPress={this.logout.bind(this)}>
               <SimpleLineIcons style={styles.iconLogout} name={'logout'} size={25} color={'white'}/>
           </TouchableOpacity>
           <Text style={styles.textTab}>Home Screen</Text>
