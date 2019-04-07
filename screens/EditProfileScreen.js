@@ -79,7 +79,7 @@ export default class EditProfileScreen extends Component {
                       if (address) {
                         if (country) {
                           if (this.validate(phoneNumber, 'phoneNumber')) {
-                            fetch('http://www.digital-resume-portfolio.pl/profile', {
+                            fetch('http://www.server-digital-resume-portfolio.pl/profile', {
                               method: 'POST',
                               headers: {
                                 Accept: 'application/json',
@@ -100,7 +100,7 @@ export default class EditProfileScreen extends Component {
                               })
                             }).then((response) => response.json())
                               .then((responseJson) => {
-                                if (responseJson.statusCode === '200') {
+                                if (responseJson.statusCode === '201') {
                                   if (roleAsync === 'ROLE_USER') {
                                     this.newScreen('routesUser')
                                     ToastAndroid.show("Success Profile Update User", ToastAndroid.SHORT);
@@ -108,8 +108,6 @@ export default class EditProfileScreen extends Component {
                                     this.newScreen('routesAdmin');
                                     ToastAndroid.show("Success Profile Update Android", ToastAndroid.SHORT);
                                   }
-                                } else if (responseJson.status === '400') {
-                                  ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
                                 } else if (responseJson.statusCode === '409') {
                                   ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
                                 } else {

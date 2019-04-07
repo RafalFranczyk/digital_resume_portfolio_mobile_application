@@ -17,6 +17,9 @@ export default class CVListScreen extends Component {
       dataSource: [],
       name: '',
       description: '',
+      summary:'',
+      githubLink:'',
+      linkedInLink:'',
       modalVisible: false,
     };
   }
@@ -24,7 +27,7 @@ export default class CVListScreen extends Component {
   async componentDidMount() {
     tokenAsync = await AsyncStorage.getItem('token');
     console.log(tokenAsync);
-    return fetch('http://www.digital-resume-portfolio.pl/resumes', {
+    return fetch('http://www.server-digital-resume-portfolio.pl/resumes', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -64,7 +67,7 @@ export default class CVListScreen extends Component {
   addResume = () => {
     onClose = () => this.setState({ modalVisible: false });
     console.log('token' + tokenAsync)
-    fetch('http://www.digital-resume-portfolio.pl/resume', {
+    fetch('http://www.server-digital-resume-portfolio.pl/resume', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -73,7 +76,10 @@ export default class CVListScreen extends Component {
       },
       body: JSON.stringify({
         name: this.state.name,
-        description: this.state.description
+        description: this.state.description,
+        summary:this.summary,
+        githubLink:this.githubLink,
+        linkedInLink:this.linkedInLink,
       })
     }).then((response) => response.json())
       .then((responseJson) => {
@@ -114,7 +120,7 @@ export default class CVListScreen extends Component {
   };
 
   deleteResume = (value) => {
-    fetch('http://www.digital-resume-portfolio.pl/resume/' + value, {
+    fetch('http://www.server-digital-resume-portfolio.pl/resume?id=' + value, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -213,6 +219,95 @@ export default class CVListScreen extends Component {
                 onChangeText={(description) => this.setState({ description })}
               />
               <View style={styles.triangleRight} />
+
+              <View style={styles.triangleLeft} />
+              <Text>Enter Summary about your new Resume</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Summary"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(summary) => this.setState({ summary })}
+              />
+              <View style={styles.triangleRight} />
+
+              <View style={styles.triangleLeft} />
+              <Text>Enter github Link about your new Resume</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Github Link"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(githubLink) => this.setState({ githubLink })}
+              />
+              <View style={styles.triangleRight} />
+
+              <View style={styles.triangleLeft} />
+              <Text>Enter linkedIn Link about your new Resume</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="LinkedIn Link"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(linkedInLink) => this.setState({ linkedInLink })}
+              />
+              <View style={styles.triangleRight} />
+
+
             </View>
             <Mybutton
               title="Add Resume"

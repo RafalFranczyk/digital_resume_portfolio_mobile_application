@@ -44,7 +44,7 @@ export default class UpdateProfileScreen extends React.Component {
     tokenAsync = await AsyncStorage.getItem('token');
     roleAsync = await AsyncStorage.getItem('role');
     usernameEmailAsync = await AsyncStorage.getItem('email');
-    return fetch('http://www.digital-resume-portfolio.pl/profile', {
+    return fetch('http://www.server-digital-resume-portfolio.pl/profile', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -121,7 +121,7 @@ export default class UpdateProfileScreen extends React.Component {
                       if (address) {
                         if (country) {
                           if (this.validate(phoneNumber, 'phoneNumber')) {
-                            fetch('http://www.digital-resume-portfolio.pl/profile', {
+                            fetch('http://www.server-digital-resume-portfolio.pl/profile', {
                               method: 'PUT',
                               headers: {
                                 Accept: 'application/json',
@@ -189,7 +189,7 @@ export default class UpdateProfileScreen extends React.Component {
     onClose = () => this.setState({ modalVisible: false });
     console.log('token delete' + tokenAsync)
     console.log('password ' + this.state.password)
-    fetch('http://www.digital-resume-portfolio.pl/auth/delete', {
+    fetch('http://www.server-digital-resume-portfolio.pl/mobile/auth/delete', {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -197,8 +197,7 @@ export default class UpdateProfileScreen extends React.Component {
         'Authorization': 'Bearer ' + tokenAsync
       },
       body: JSON.stringify({
-        usernameOrEmail: usernameEmailAsync,
-        password: this.state.password
+        passwordConfirmation: this.state.password
       })
     }).then((response) => response.json())
       .then((responseJson) => {
@@ -210,6 +209,8 @@ export default class UpdateProfileScreen extends React.Component {
           AsyncStorage.removeItem('email');
           this.newScreen('App')
           ToastAndroid.show('Delete Account success :)', ToastAndroid.SHORT);
+        } else if (responseJson.status === '401') {
+          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
         } else if (responseJson.status === '500') {
           ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
         }

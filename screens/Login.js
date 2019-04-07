@@ -36,7 +36,7 @@ export default class Login extends Component {
 
     if (usernameOrEmail) {
       if (password) {
-        fetch('http://www.digital-resume-portfolio.pl/auth/signin', {
+        fetch('http://www.server-digital-resume-portfolio.pl/mobile/auth/signin', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -50,16 +50,16 @@ export default class Login extends Component {
           .then((responseJson) => {
             if (responseJson.statusCode === '200') {
               AsyncStorage.setItem('token', responseJson.token);
-              AsyncStorage.setItem('role', responseJson.role[0]);
+              AsyncStorage.setItem('role', responseJson.role);
               AsyncStorage.setItem('email', usernameOrEmail);
               if (responseJson.profile === 'null') {
                 this.newScreen('EditProfileScreen');
                 ToastAndroid.show('Your Profile is Empty , Please enter details', ToastAndroid.SHORT);
               } else {
-                if (responseJson.role[0] === 'ROLE_USER') {
+                if (responseJson.role === 'ROLE_USER') { // or responseJson.role === 'ROLE_USER'
                   this.newScreen('routesUser');
                   ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT);
-                } else if (responseJson.role[0] === 'ROLE_ADMIN') {
+                } else if (responseJson.role === 'ROLE_ADMIN') { //responseJson.role === 'ROLE_ADMIN'
                   this.newScreen('routesAdmin');
                   ToastAndroid.show('Hello My Friend ' + username + ' :)', ToastAndroid.SHORT);
                 }

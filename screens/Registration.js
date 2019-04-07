@@ -60,7 +60,7 @@ export default class Registration extends Component {
         if (password) {
           if (password === confirmPassword) {
             if (this.validate(email, 'email')) {
-              fetch('http://www.digital-resume-portfolio.pl/auth/signup', {
+              fetch('http://www.server-digital-resume-portfolio.pl/mobile/auth/signup', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -74,7 +74,7 @@ export default class Registration extends Component {
               }).then((response) => response.json())
                 .then((responseJson) => {
                   console.log(responseJson)
-                  if (responseJson.statusCode === '200') {
+                  if (responseJson.statusCode === '201') {
                     AsyncStorage.setItem('token', responseJson.token);
                     AsyncStorage.setItem('role', responseJson.role);
                     AsyncStorage.setItem('email', email);
