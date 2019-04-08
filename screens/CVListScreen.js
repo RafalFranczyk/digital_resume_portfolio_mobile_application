@@ -43,11 +43,13 @@ export default class CVListScreen extends Component {
             dataSource: responseJson.resumes,
           })
         }
+        console.log(this.state.dataSource)
       })
       .catch((error) => {
         console.log(error)
       });
   }
+
   newScreen = (screen) => {
     Navigation.mergeOptions('drawerId', {
       sideMenu: {
@@ -105,14 +107,20 @@ export default class CVListScreen extends Component {
   }
 
   handlerLongClick = (value) => {
+    AsyncStorage.setItem('resumeID', String (value));
     Alert.alert(
       'Delete Resume',
       'Are you sure ? ',
       [
         {
-          text: 'Ok',
+          text: 'Delete',
           onPress: () =>
             this.deleteResume(value)
+        },
+        {
+          text: 'Modify',
+          onPress: () =>
+            this.newScreen('CVModifyScreen')
         },
       ],
       { cancelable: true }

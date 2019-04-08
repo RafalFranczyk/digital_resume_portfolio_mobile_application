@@ -19,6 +19,33 @@ export default class CVModifyScreen extends Component {
     };
   }
 
+  async componentDidMount() {
+    tokenAsync = await AsyncStorage.getItem('token');
+    resumeID = await AsyncStorage.getItem('resumeId');
+    console.log(tokenAsync);
+    return fetch('http://www.server-digital-resume-portfolio.pl/resume?id='+resumeID, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenAsync
+      }
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.statusCode);
+        if (responseJson.statusCode === '200') {
+          this.setState({
+            isLoading: false,
+            dataSource: responseJson.resume,
+          })
+        }
+        console.log(dataSource);
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
   newScreen = (screen) => {
     Navigation.mergeOptions('drawerId', {
       sideMenu: {

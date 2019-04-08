@@ -14,6 +14,7 @@ import UpdateProfileScreen from "./screens/UpdateProfileScreen";
 import CVListScreen from "./screens/CVListScreen";
 import PortfolioListScreen from "./screens/PortfolioListScreen";
 import PortfolioModifyScreen from "./screens/PortfolioModifyScreen";
+import CVModifyScreen from "./screens/CVModifyScreen";
 
 Navigation.registerComponent('App', () => App);
 Navigation.registerComponent('Regulations', () => Regulations);
@@ -29,6 +30,7 @@ Navigation.registerComponent('UpdateProfileScreen',() => UpdateProfileScreen);
 Navigation.registerComponent('CVListScreen',() => CVListScreen);
 Navigation.registerComponent('PortfolioListScreen', () => PortfolioListScreen);
 Navigation.registerComponent('PortfolioModifyScreen',()=> PortfolioModifyScreen)
+Navigation.registerComponent('CVModifyScreen',() => CVModifyScreen);
 
 console.disableYellowBox = true;
 Navigation.events().registerAppLaunchedListener(() => {
