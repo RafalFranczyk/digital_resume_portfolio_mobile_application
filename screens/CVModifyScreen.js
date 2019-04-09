@@ -80,7 +80,7 @@ export default class CVModifyScreen extends Component {
             dataHobbies: responseJson.resume.resumeHobbies,
             dataLanguages: responseJson.resume.resumeLanguages,
             //dataWorkExpieriences : responseJson.resume.resumeExperiences,
-            //dataSkills : responseJson.resume.resumeSkills,
+            dataSkills : responseJson.resume.resumeSkills,
           })
         }
         console.log([this.state.dataSource])
@@ -88,6 +88,7 @@ export default class CVModifyScreen extends Component {
         console.log(this.state.dataEducations)
         console.log(this.state.dataHobbies)
         console.log(this.state.dataLanguages)
+        console.log(this.state.dataSkills)
       })
       .catch((error) => {
         console.log(error)
@@ -672,6 +673,8 @@ export default class CVModifyScreen extends Component {
             />
           </View>
 
+          {/* Modal Education */}
+
           <Overlay visible={this.state.modalVisibleEducation} onClose={this.onCloseEducation} closeOnTouchOutside>
             <View style={[styles.overlay, { marginTop: 10 }]}>
               <View style={styles.triangleLeft} />
@@ -933,6 +936,130 @@ export default class CVModifyScreen extends Component {
             <Mybutton
               title="Add Language Section"
               customClick={this.addLanguage.bind(this)}
+            />
+          </Overlay>
+
+          {/* Modal Course */}
+
+
+          <Overlay visible={this.state.modalVisibleCourse} onClose={this.onCloseCourse} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Course Name</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Course Name"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(courseName) => this.setState({ courseName })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Start Date </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Start Date yyyy-mm-dd"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(courseStartDate) => this.setState({ courseStartDate })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter End Date </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="End Date yyyy-mm-dd"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(courseEndDate) => this.setState({ courseEndDate })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Description </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Description"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(courseDescription) => this.setState({ courseDescription })}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Add Course Section"
+              customClick={this.addCourse.bind(this)}
             />
           </Overlay>
 
