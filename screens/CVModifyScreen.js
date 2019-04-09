@@ -37,12 +37,14 @@ export default class CVModifyScreen extends Component {
       summary: '',
       githubLink: '',
       linkedInLink: '',
-      startDate: '',
-      endDate: '',
-      toPresent: '',
-      schoolName: '',
-      title: '',
-      description: '',
+      educationStartDate: '',
+      educationEndDate: '',
+      educationToPresent: '',
+      educationSchoolName: '',
+      educationTitle: '',
+      educationDescription: '',
+      hobbyName:'',
+      hobbyDescription:''
     };
   }
 
@@ -300,18 +302,18 @@ export default class CVModifyScreen extends Component {
 
   addEducation = () => {
 
-    const { startDate } = this.state;
-    const { endDate } = this.state;
-    const { toPresent } = this.state;
-    const { schoolName } = this.state;
-    const { title } = this.state;
-    const { description } = this.state;
+    const { educationStartDate } = this.state;
+    const { educationEndDate } = this.state;
+    const { educationToPresent } = this.state;
+    const { educationSchoolName } = this.state;
+    const { educationTitle } = this.state;
+    const { educationDescription } = this.state;
 
-    if (startDate) {
-      if (endDate) {
-        if (schoolName) {
-          if (title) {
-            if (description) {
+    if (educationStartDate) {
+      if (educationEndDate) {
+        if (educationSchoolName) {
+          if (educationTitle) {
+            if (educationDescription) {
               fetch('http://www.server-digital-resume-portfolio.pl/resumeeducation', {
                 method: 'POST',
                 headers: {
@@ -320,12 +322,12 @@ export default class CVModifyScreen extends Component {
                   'Authorization': 'Bearer ' + tokenAsync
                 },
                 body: JSON.stringify({
-                  startDate: this.state.startDate,
-                  endDate: this.state.endDate,
-                  toPresent: this.state.toPresent,
-                  schoolName: this.state.schoolName,
-                  title: this.state.title,
-                  description: this.state.description,
+                  startDate: this.state.educationStartDate,
+                  endDate: this.state.educationEndDate,
+                  toPresent: this.state.educationToPresent,
+                  schoolName: this.state.educationSchoolName,
+                  title: this.state.educationTitle,
+                  description: this.state.educationDescription,
                   resumeId: Number(resumeID)
                 })
               }).then((response) => response.json())
@@ -352,6 +354,47 @@ export default class CVModifyScreen extends Component {
         } else { ToastAndroid.show('Enter Scholl Name', ToastAndroid.SHORT); }
       } else { ToastAndroid.show('Enter End Date yyyy-mm-dd', ToastAndroid.SHORT); }
     } else { ToastAndroid.show('Enter Start Date yyyy-mm-dd', ToastAndroid.SHORT); }
+  }
+
+  addHobby = () =>{
+    const { hobbyName } = this.state;
+    const { hobbyDescription } = this.state;
+
+          if (hobbyName) {
+            if (hobbyDescription) {
+              fetch('http://www.server-digital-resume-portfolio.pl/resumehobby', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + tokenAsync
+                },
+                body: JSON.stringify({
+                  name: this.state.hobbyName,
+                  description: this.state.hobbyDescription,
+                  resumeId: Number(resumeID)
+                })
+              }).then((response) => response.json())
+                .then((responseJson) => {
+                  console.log(responseJson)
+                  console.log(responseJson.statusCode)
+                  console.log(tokenAsync)
+                  if (responseJson.statusCode === '200') {
+                    this.setState({
+                      modalVisibleHobby: false
+                    })
+                    this.componentDidMount()
+                    ToastAndroid.show("Add Hobby Section", ToastAndroid.SHORT)
+                  } else if (responseJson.status === '400') {
+                    ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
+                  } else if (responseJson.statusCode === '409') {
+                    ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+                  } else {
+                    ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
+                  }
+                })
+            } else { ToastAndroid.show('Enter Description', ToastAndroid.SHORT); }
+          } else { ToastAndroid.show('Enter Title Degree', ToastAndroid.SHORT); }
   }
 
   onCloseEducation = () => this.setState({ modalVisibleEducation: false });
@@ -557,7 +600,7 @@ export default class CVModifyScreen extends Component {
                 keyboardType="default"
                 returnKeyType="done"
                 blurOnSubmit={true}
-                onChangeText={(schoolName) => this.setState({ schoolName })}
+                onChangeText={(educationSchoolName) => this.setState({ educationSchoolName })}
               />
               <View style={styles.triangleRight} />
 
@@ -585,7 +628,7 @@ export default class CVModifyScreen extends Component {
                 keyboardType="default"
                 returnKeyType="done"
                 blurOnSubmit={true}
-                onChangeText={(startDate) => this.setState({ startDate })}
+                onChangeText={(educationStartDate) => this.setState({ educationStartDate })}
               />
               <View style={styles.triangleRight} />
 
@@ -613,7 +656,7 @@ export default class CVModifyScreen extends Component {
                 keyboardType="default"
                 returnKeyType="done"
                 blurOnSubmit={true}
-                onChangeText={(endDate) => this.setState({ endDate })}
+                onChangeText={(educationEndDate) => this.setState({ educationEndDate })}
               />
               <View style={styles.triangleRight} />
 
@@ -641,7 +684,7 @@ export default class CVModifyScreen extends Component {
                 keyboardType="default"
                 returnKeyType="done"
                 blurOnSubmit={true}
-                onChangeText={(title) => this.setState({ title })}
+                onChangeText={(educationTitle) => this.setState({ educationTitle })}
               />
               <View style={styles.triangleRight} />
 
@@ -669,7 +712,7 @@ export default class CVModifyScreen extends Component {
                 keyboardType="default"
                 returnKeyType="done"
                 blurOnSubmit={true}
-                onChangeText={(description) => this.setState({ description })}
+                onChangeText={(educationDescription) => this.setState({ educationDescription })}
               />
               <View style={styles.triangleRight} />
             </View>
@@ -679,7 +722,72 @@ export default class CVModifyScreen extends Component {
             />
           </Overlay>
 
-          
+          { /* Hobby Modal */ }
+
+          <Overlay visible={this.state.modalVisibleHobby} onClose={this.onCloseHobby} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Hobby name</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Hobby Name"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(hobbyName) => this.setState({ hobbyName })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Hobby Description </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Hobby Description"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(hobbyDescription) => this.setState({ hobbyDescription })}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Add Hobby Section"
+              customClick={this.addHobby.bind(this)}
+            />
+          </Overlay>
 
           <View style={styles.ActionButton}>
             <ActionButton buttonColor="rgba(231,76,60,1)">
