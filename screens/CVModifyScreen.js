@@ -10,6 +10,7 @@ import IconButton from 'react-native-vector-icons/Ionicons';
 import Mybutton from './components/Mybutton';
 import Overlay from 'react-native-modal-overlay';
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
+import StarRating from 'react-native-star-rating';
 
 export default class CVModifyScreen extends Component {
   constructor() {
@@ -43,11 +44,17 @@ export default class CVModifyScreen extends Component {
       educationSchoolName: '',
       educationTitle: '',
       educationDescription: '',
-      hobbyName:'',
-      hobbyDescription:''
+      hobbyName: '',
+      hobbyDescription: '',
+      languageName: '',
+      languageLevel: 1.0,
+      courseName:'',
+      courseStartDate:'',
+      courseEndDate:'',
+      courseToPresent:false,
+      courseDescription:'',
     };
   }
-
   async componentDidMount() {
     tokenAsync = await AsyncStorage.getItem('token');
     resumeID = await AsyncStorage.getItem('resumeID');
@@ -356,13 +363,100 @@ export default class CVModifyScreen extends Component {
     } else { ToastAndroid.show('Enter Start Date yyyy-mm-dd', ToastAndroid.SHORT); }
   }
 
-  addHobby = () =>{
+  addHobby = () => {
     const { hobbyName } = this.state;
     const { hobbyDescription } = this.state;
 
-          if (hobbyName) {
-            if (hobbyDescription) {
-              fetch('http://www.server-digital-resume-portfolio.pl/resumehobby', {
+    if (hobbyName) {
+      if (hobbyDescription) {
+        fetch('http://www.server-digital-resume-portfolio.pl/resumehobby', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + tokenAsync
+          },
+          body: JSON.stringify({
+            name: this.state.hobbyName,
+            description: this.state.hobbyDescription,
+            resumeId: Number(resumeID)
+          })
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson)
+            console.log(responseJson.statusCode)
+            console.log(tokenAsync)
+            if (responseJson.statusCode === '200') {
+              this.setState({
+                modalVisibleHobby: false
+              })
+              this.componentDidMount()
+              ToastAndroid.show("Add Hobby Section", ToastAndroid.SHORT)
+            } else if (responseJson.status === '400') {
+              ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
+            } else if (responseJson.statusCode === '409') {
+              ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+            } else {
+              ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
+            }
+          })
+      } else { ToastAndroid.show('Enter Description', ToastAndroid.SHORT); }
+    } else { ToastAndroid.show('Enter Title Degree', ToastAndroid.SHORT); }
+  }
+
+  addLanguage = () => {
+    const { languageName } = this.state;
+    const { languageLevel } = this.state;
+
+    if (languageName) {
+      if (languageLevel) {
+        fetch('http://www.server-digital-resume-portfolio.pl/resumelanguage', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + tokenAsync
+          },
+          body: JSON.stringify({
+            name: this.state.languageName,
+            level: Number (this.state.languageLevel),
+            resumeId: Number(resumeID)
+          })
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson)
+            console.log(responseJson.statusCode)
+            console.log(tokenAsync)
+            if (responseJson.statusCode === '200') {
+              this.setState({
+                modalVisibleLanguage: false
+              })
+              this.componentDidMount()
+              ToastAndroid.show("Add Language Section", ToastAndroid.SHORT)
+            } else if (responseJson.status === '400') {
+              ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
+            } else if (responseJson.statusCode === '409') {
+              ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+            } else {
+              ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
+            }
+          })
+      } else { ToastAndroid.show('Enter Description', ToastAndroid.SHORT); }
+    } else { ToastAndroid.show('Enter Title Degree', ToastAndroid.SHORT); }
+  }
+
+  addCourse = () => {
+    const { courseStartDate } = this.state;
+    const { courseEndDate } = this.state;
+    const { courseToPresent } = this.state;
+    const { courseName } = this.state;
+    const { courseDescription } = this.state;
+
+    if (courseStartDate) {
+        if (courseEndDate) {
+          if (courseName) {
+            if (courseDescription) {
+              fetch('http://www.server-digital-resume-portfolio.pl/resumecourse', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -370,8 +464,11 @@ export default class CVModifyScreen extends Component {
                   'Authorization': 'Bearer ' + tokenAsync
                 },
                 body: JSON.stringify({
-                  name: this.state.hobbyName,
-                  description: this.state.hobbyDescription,
+                  name: this.state.courseName,
+                  startDate: this.state.courseStartDate,
+                  endDate: this.state.courseEndDate,
+                  toPresent: this.state.courseToPresent,
+                  description: this.state.courseDescription,
                   resumeId: Number(resumeID)
                 })
               }).then((response) => response.json())
@@ -381,10 +478,10 @@ export default class CVModifyScreen extends Component {
                   console.log(tokenAsync)
                   if (responseJson.statusCode === '200') {
                     this.setState({
-                      modalVisibleHobby: false
+                      modalVisibleCourse: false
                     })
                     this.componentDidMount()
-                    ToastAndroid.show("Add Hobby Section", ToastAndroid.SHORT)
+                    ToastAndroid.show("Add Course Section", ToastAndroid.SHORT)
                   } else if (responseJson.status === '400') {
                     ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
                   } else if (responseJson.statusCode === '409') {
@@ -394,7 +491,9 @@ export default class CVModifyScreen extends Component {
                   }
                 })
             } else { ToastAndroid.show('Enter Description', ToastAndroid.SHORT); }
-          } else { ToastAndroid.show('Enter Title Degree', ToastAndroid.SHORT); }
+          } else { ToastAndroid.show('Enter Course Name', ToastAndroid.SHORT); }
+      } else { ToastAndroid.show('Enter End Date yyyy-mm-dd', ToastAndroid.SHORT); }
+    } else { ToastAndroid.show('Enter Start Date yyyy-mm-dd', ToastAndroid.SHORT); }
   }
 
   onCloseEducation = () => this.setState({ modalVisibleEducation: false });
@@ -722,7 +821,7 @@ export default class CVModifyScreen extends Component {
             />
           </Overlay>
 
-          { /* Hobby Modal */ }
+          { /* Hobby Modal */}
 
           <Overlay visible={this.state.modalVisibleHobby} onClose={this.onCloseHobby} closeOnTouchOutside>
             <View style={[styles.overlay, { marginTop: 10 }]}>
@@ -789,24 +888,74 @@ export default class CVModifyScreen extends Component {
             />
           </Overlay>
 
+          { /* Language Modal */}
+
+          <Overlay visible={this.state.modalVisibleLanguage} onClose={this.onCloseLanguage} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Language name</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Hobby Name"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(languageName) => this.setState({ languageName })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Language Level </Text>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={this.state.languageLevel}
+                selectedStar={(languageLevel) => this.setState({languageLevel})}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Add Language Section"
+              customClick={this.addLanguage.bind(this)}
+            />
+          </Overlay>
+
+
+
           <View style={styles.ActionButton}>
             <ActionButton buttonColor="rgba(231,76,60,1)">
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='#9b59b6' title="New Task" onPress={() => this.setState({ modalVisibleEducation: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='green' title="New Task" onPress={() => this.setState({ modalVisibleEducation: true })}>
                 <Entypo name="language" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='#3498db' title="Notifications" onPress={() => this.setState({ modalVisibleWorkExpierience: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='blue' title="Notifications" onPress={() => this.setState({ modalVisibleWorkExpierience: true })}>
                 <IconButton name="ios-attach" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='#1abc9c' title="All Tasks" onPress={() => this.setState({ modalVisibleHobby: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='yellow' title="All Tasks" onPress={() => this.setState({ modalVisibleHobby: true })}>
                 <IconButton name="ios-attach" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='#1abc9c' title="All Tasks" onPress={() => this.setState({ modalVisibleLanguage: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='cyan' title="All Tasks" onPress={() => this.setState({ modalVisibleLanguage: true })}>
                 <IconButton name="ios-attach" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='#1abc9c' title="All Tasks" onPress={() => this.setState({ modalVisibleCourse: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='purple' title="All Tasks" onPress={() => this.setState({ modalVisibleCourse: true })}>
                 <IconButton name="ios-attach" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='#1abc9c' title="All Tasks" onPress={() => this.setState({ modalVisibleSkill: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='red' title="All Tasks" onPress={() => this.setState({ modalVisibleSkill: true })}>
                 <IconButton name="ios-attach" style={styles.actionButtonIcon} />
               </ActionButton.Item>
             </ActionButton>
