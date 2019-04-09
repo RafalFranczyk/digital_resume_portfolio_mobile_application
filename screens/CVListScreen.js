@@ -314,8 +314,6 @@ export default class CVListScreen extends Component {
                 onChangeText={(linkedInLink) => this.setState({ linkedInLink })}
               />
               <View style={styles.triangleRight} />
-
-
             </View>
             <Mybutton
               title="Add Resume"
