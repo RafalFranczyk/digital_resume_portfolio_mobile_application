@@ -53,6 +53,8 @@ export default class CVModifyScreen extends Component {
       courseEndDate:'',
       courseToPresent:false,
       courseDescription:'',
+      skillName:'',
+      skillLevel:1.0,
     };
   }
   async componentDidMount() {
@@ -495,6 +497,48 @@ export default class CVModifyScreen extends Component {
           } else { ToastAndroid.show('Enter Course Name', ToastAndroid.SHORT); }
       } else { ToastAndroid.show('Enter End Date yyyy-mm-dd', ToastAndroid.SHORT); }
     } else { ToastAndroid.show('Enter Start Date yyyy-mm-dd', ToastAndroid.SHORT); }
+  }
+
+  addSkill = () => {
+
+    const { skillName } = this.state;
+    const { skillLevel } = this.state;
+
+    if (skillName) {
+      if (skillLevel) {
+        fetch('http://www.server-digital-resume-portfolio.pl/resumeskill', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + tokenAsync
+          },
+          body: JSON.stringify({
+            name: this.state.skillName,
+            level: Number (this.state.skillLevel),
+            resumeId: Number(resumeID)
+          })
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson)
+            console.log(responseJson.statusCode)
+            console.log(tokenAsync)
+            if (responseJson.statusCode === '200') {
+              this.setState({
+                modalVisibleSkill: false
+              })
+              this.componentDidMount()
+              ToastAndroid.show("Add Skill Section", ToastAndroid.SHORT)
+            } else if (responseJson.status === '400') {
+              ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
+            } else if (responseJson.statusCode === '409') {
+              ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+            } else {
+              ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
+            }
+          })
+      } else { ToastAndroid.show('Enter Skill Level', ToastAndroid.SHORT); }
+    } else { ToastAndroid.show('Enter Skill Name', ToastAndroid.SHORT); }
   }
 
   onCloseEducation = () => this.setState({ modalVisibleEducation: false });
@@ -1060,6 +1104,54 @@ export default class CVModifyScreen extends Component {
             <Mybutton
               title="Add Course Section"
               customClick={this.addCourse.bind(this)}
+            />
+          </Overlay>
+
+          { /* Skill Modal */}
+
+          <Overlay visible={this.state.modalVisibleSkill} onClose={this.onCloseSkill} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Skill name</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Hobby Name"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(skillName) => this.setState({ skillName })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Skill Level </Text>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={this.state.skillLevel}
+                selectedStar={(skillLevel) => this.setState({skillLevel})}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Add Skill Section"
+              customClick={this.addSkill.bind(this)}
             />
           </Overlay>
 
