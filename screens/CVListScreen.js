@@ -79,9 +79,9 @@ export default class CVListScreen extends Component {
       body: JSON.stringify({
         name: this.state.name,
         description: this.state.description,
-        summary:this.summary,
-        githubLink:this.githubLink,
-        linkedInLink:this.linkedInLink,
+        summary:this.state.summary,
+        githubLink:this.state.githubLink,
+        linkedInLink:this.state.linkedInLink,
       })
     }).then((response) => response.json())
       .then((responseJson) => {
@@ -106,6 +106,11 @@ export default class CVListScreen extends Component {
     this.addResume();
   }
 
+  modifyScreen = (value) =>{
+    AsyncStorage.setItem('resumeID', String (value));
+    this.newScreen('CVModifyScreen');
+  }
+
   handlerLongClick = (value) => {
     AsyncStorage.setItem('resumeID', String (value));
     Alert.alert(
@@ -116,11 +121,6 @@ export default class CVListScreen extends Component {
           text: 'Delete',
           onPress: () =>
             this.deleteResume(value)
-        },
-        {
-          text: 'Modify',
-          onPress: () =>
-            this.newScreen('CVModifyScreen')
         },
       ],
       { cancelable: true }
@@ -335,6 +335,7 @@ export default class CVListScreen extends Component {
                       {item.description}
                     </Text>
                     <Button
+                      onPress = {() => this.modifyScreen(item.id)}
                       icon={<Icon name='code' color='#ffffff' />}
                       backgroundColor='#03A9F4'
                       buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}

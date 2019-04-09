@@ -11,6 +11,9 @@ import Mybutton from './components/Mybutton';
 import Overlay from 'react-native-modal-overlay';
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 import StarRating from 'react-native-star-rating';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class CVModifyScreen extends Component {
   constructor() {
@@ -48,13 +51,18 @@ export default class CVModifyScreen extends Component {
       hobbyDescription: '',
       languageName: '',
       languageLevel: 1.0,
-      courseName:'',
-      courseStartDate:'',
-      courseEndDate:'',
-      courseToPresent:false,
-      courseDescription:'',
-      skillName:'',
-      skillLevel:1.0,
+      courseName: '',
+      courseStartDate: '',
+      courseEndDate: '',
+      courseToPresent: false,
+      courseDescription: '',
+      skillName: '',
+      skillLevel: 1.0,
+      workStartDate: '',
+      workEndDate: '',
+      workCompanyName: '',
+      workTitle: '',
+      workDescription: '',
     };
   }
   async componentDidMount() {
@@ -81,8 +89,8 @@ export default class CVModifyScreen extends Component {
             dataEducations: responseJson.resume.resumeEducations,
             dataHobbies: responseJson.resume.resumeHobbies,
             dataLanguages: responseJson.resume.resumeLanguages,
-            //dataWorkExpieriences : responseJson.resume.resumeExperiences,
-            dataSkills : responseJson.resume.resumeSkills,
+            dataWorkExpieriences: responseJson.resume.resumeWorkExperiences,
+            dataSkills: responseJson.resume.resumeSkills,
           })
         }
         console.log([this.state.dataSource])
@@ -91,6 +99,7 @@ export default class CVModifyScreen extends Component {
         console.log(this.state.dataHobbies)
         console.log(this.state.dataLanguages)
         console.log(this.state.dataSkills)
+        console.log(this.state.dataWorkExpieriences)
       })
       .catch((error) => {
         console.log(error)
@@ -116,7 +125,7 @@ export default class CVModifyScreen extends Component {
 
   backToResumes = () => {
     AsyncStorage.removeItem('resumeID');
-    this.newScreen('CVListScreen');
+    this.newScreen('UserNavigationScreen');
   }
 
   deleteCourse = (courseID) => {
@@ -309,6 +318,44 @@ export default class CVModifyScreen extends Component {
     );
   }
 
+  deleteWorkExperience = (courseID) => {
+    return fetch('http://www.server-digital-resume-portfolio.pl/resumeworkexperience?id=' + courseID + '&resumeId=' + resumeID, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenAsync
+      }
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        if (responseJson.statusCode === '200') {
+          this.componentDidMount(),
+            ToastAndroid.show('Delete Work Experience Section :)', ToastAndroid.SHORT);
+        } else if (responseJson.status === '500') {
+          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+  handlerLongClickWorkExperience = (courseID) => {
+    Alert.alert(
+      'Delete Work Experience',
+      'Are you sure ? ',
+      [
+        {
+          text: 'Delete',
+          onPress: () =>
+            this.deleteWorkExperience(courseID)
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
 
   addEducation = () => {
 
@@ -422,7 +469,7 @@ export default class CVModifyScreen extends Component {
           },
           body: JSON.stringify({
             name: this.state.languageName,
-            level: Number (this.state.languageLevel),
+            level: Number(this.state.languageLevel),
             resumeId: Number(resumeID)
           })
         }).then((response) => response.json())
@@ -456,45 +503,45 @@ export default class CVModifyScreen extends Component {
     const { courseDescription } = this.state;
 
     if (courseStartDate) {
-        if (courseEndDate) {
-          if (courseName) {
-            if (courseDescription) {
-              fetch('http://www.server-digital-resume-portfolio.pl/resumecourse', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + tokenAsync
-                },
-                body: JSON.stringify({
-                  name: this.state.courseName,
-                  startDate: this.state.courseStartDate,
-                  endDate: this.state.courseEndDate,
-                  toPresent: this.state.courseToPresent,
-                  description: this.state.courseDescription,
-                  resumeId: Number(resumeID)
-                })
-              }).then((response) => response.json())
-                .then((responseJson) => {
-                  console.log(responseJson)
-                  console.log(responseJson.statusCode)
-                  console.log(tokenAsync)
-                  if (responseJson.statusCode === '200') {
-                    this.setState({
-                      modalVisibleCourse: false
-                    })
-                    this.componentDidMount()
-                    ToastAndroid.show("Add Course Section", ToastAndroid.SHORT)
-                  } else if (responseJson.status === '400') {
-                    ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
-                  } else if (responseJson.statusCode === '409') {
-                    ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
-                  } else {
-                    ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
-                  }
-                })
-            } else { ToastAndroid.show('Enter Description', ToastAndroid.SHORT); }
-          } else { ToastAndroid.show('Enter Course Name', ToastAndroid.SHORT); }
+      if (courseEndDate) {
+        if (courseName) {
+          if (courseDescription) {
+            fetch('http://www.server-digital-resume-portfolio.pl/resumecourse', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + tokenAsync
+              },
+              body: JSON.stringify({
+                name: this.state.courseName,
+                startDate: this.state.courseStartDate,
+                endDate: this.state.courseEndDate,
+                toPresent: this.state.courseToPresent,
+                description: this.state.courseDescription,
+                resumeId: Number(resumeID)
+              })
+            }).then((response) => response.json())
+              .then((responseJson) => {
+                console.log(responseJson)
+                console.log(responseJson.statusCode)
+                console.log(tokenAsync)
+                if (responseJson.statusCode === '200') {
+                  this.setState({
+                    modalVisibleCourse: false
+                  })
+                  this.componentDidMount()
+                  ToastAndroid.show("Add Course Section", ToastAndroid.SHORT)
+                } else if (responseJson.status === '400') {
+                  ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
+                } else if (responseJson.statusCode === '409') {
+                  ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+                } else {
+                  ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
+                }
+              })
+          } else { ToastAndroid.show('Enter Description', ToastAndroid.SHORT); }
+        } else { ToastAndroid.show('Enter Course Name', ToastAndroid.SHORT); }
       } else { ToastAndroid.show('Enter End Date yyyy-mm-dd', ToastAndroid.SHORT); }
     } else { ToastAndroid.show('Enter Start Date yyyy-mm-dd', ToastAndroid.SHORT); }
   }
@@ -515,7 +562,7 @@ export default class CVModifyScreen extends Component {
           },
           body: JSON.stringify({
             name: this.state.skillName,
-            level: Number (this.state.skillLevel),
+            level: Number(this.state.skillLevel),
             resumeId: Number(resumeID)
           })
         }).then((response) => response.json())
@@ -539,6 +586,60 @@ export default class CVModifyScreen extends Component {
           })
       } else { ToastAndroid.show('Enter Skill Level', ToastAndroid.SHORT); }
     } else { ToastAndroid.show('Enter Skill Name', ToastAndroid.SHORT); }
+  }
+
+  addWorkExperience = () => {
+    const { workStartDate } = this.state;
+    const { workEndDate } = this.state;
+    const { workCompanyName } = this.state;
+    const { workTitle } = this.state;
+    const { workDescription } = this.state;
+
+    if (workStartDate) {
+      if (workEndDate) {
+        if (workCompanyName) {
+          if (workTitle) {
+            if (workDescription) {
+              fetch('http://www.server-digital-resume-portfolio.pl/resumeworkexperience', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + tokenAsync
+                },
+                body: JSON.stringify({
+                  startDate: this.state.workStartDate,
+                  endDate: this.state.workEndDate,
+                  toPresent: false,
+                  companyName: this.state.workCompanyName,
+                  workTitle: this.state.workTitle,
+                  workDescription: this.state.workDescription,
+                  resumeId: Number(resumeID)
+                })
+              }).then((response) => response.json())
+                .then((responseJson) => {
+                  console.log(responseJson)
+                  console.log(responseJson.statusCode)
+                  console.log(tokenAsync)
+                  if (responseJson.statusCode === '200') {
+                    this.setState({
+                      modalVisibleWorkExpierience: false
+                    })
+                    this.componentDidMount()
+                    ToastAndroid.show("Add Work Experience Section", ToastAndroid.SHORT)
+                  } else if (responseJson.status === '400') {
+                    ToastAndroid.show(responseJson.status + ' ' + responseJson.error, ToastAndroid.SHORT);
+                  } else if (responseJson.statusCode === '409') {
+                    ToastAndroid.show(responseJson.statusCode + ' ' + responseJson.statusMessage, ToastAndroid.SHORT);
+                  } else {
+                    ToastAndroid.show('Update Failed', ToastAndroid.SHORT);
+                  }
+                })
+            } else { ToastAndroid.show('Enter Work Description', ToastAndroid.SHORT); }
+          } else { ToastAndroid.show('Enter Work Title', ToastAndroid.SHORT); }
+        } else { ToastAndroid.show('Enter Company Name', ToastAndroid.SHORT); }
+      } else { ToastAndroid.show('Enter End Date', ToastAndroid.SHORT); }
+    } else { ToastAndroid.show('Enter Start Date', ToastAndroid.SHORT); }
   }
 
   onCloseEducation = () => this.setState({ modalVisibleEducation: false });
@@ -589,6 +690,36 @@ export default class CVModifyScreen extends Component {
                     </Text>
                     <Text style={{ marginBottom: 10 }}>
                       LinkedIn Link : {item.linkedInLink}
+                    </Text>
+                  </Card>
+                </TouchableOpacity>}
+              keyExtractor={(item, index) => index}
+            />
+          </View>
+
+          <View>
+            <FlatList
+              data={this.state.dataWorkExpieriences}
+              renderItem={({ item }) =>
+                <TouchableOpacity
+                  onLongPress={() => this.handlerLongClickWorkExperience(item.id)}
+                  activeOpacity={0.6}>
+                  <Card
+                    title="Resume Work Experience">
+                    <Text style={{ marginBottom: 10 }}>
+                      Work Title : {item.workTitle}
+                    </Text>
+                    <Text style={{ marginBottom: 10 }}>
+                      Company : {item.companyName}
+                    </Text>
+                    <Text style={{ marginBottom: 10 }}>
+                      Description : {item.workDescription}
+                    </Text>
+                    <Text style={{ marginBottom: 10 }}>
+                      Start Date : {item.startDate}
+                    </Text>
+                    <Text style={{ marginBottom: 10 }}>
+                      End Date : {item.endDate}
                     </Text>
                   </Card>
                 </TouchableOpacity>}
@@ -973,7 +1104,7 @@ export default class CVModifyScreen extends Component {
                 disabled={false}
                 maxStars={5}
                 rating={this.state.languageLevel}
-                selectedStar={(languageLevel) => this.setState({languageLevel})}
+                selectedStar={(languageLevel) => this.setState({ languageLevel })}
               />
               <View style={styles.triangleRight} />
             </View>
@@ -1145,7 +1276,7 @@ export default class CVModifyScreen extends Component {
                 disabled={false}
                 maxStars={5}
                 rating={this.state.skillLevel}
-                selectedStar={(skillLevel) => this.setState({skillLevel})}
+                selectedStar={(skillLevel) => this.setState({ skillLevel })}
               />
               <View style={styles.triangleRight} />
             </View>
@@ -1155,27 +1286,180 @@ export default class CVModifyScreen extends Component {
             />
           </Overlay>
 
+          {/* Modal Work Experience */}
+
+          <Overlay visible={this.state.modalVisibleCourse} onClose={this.onCloseCourse} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Company Name</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Company Name"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(workCompanyName) => this.setState({ workCompanyName })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Work Title</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Work Title"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(workTitle) => this.setState({ workTitle })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Description </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={
+                <SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Description"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(workDescription) => this.setState({ workDescription })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Start Date </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter Start Date yyyy-mm-dd"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(workStartDate) => this.setState({ workStartDate })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter End Date </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter End Date yyyy-mm-dd"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onChangeText={(workEndDate) => this.setState({ workEndDate })}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Add Work Experience Section"
+              customClick={this.addWorkExperience.bind(this)}
+            />
+            <View style={styles.triangleRight} />
+          </Overlay>
+
 
 
           <View style={styles.ActionButton}>
             <ActionButton buttonColor="rgba(231,76,60,1)">
               <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='green' title="New Task" onPress={() => this.setState({ modalVisibleEducation: true })}>
-                <Entypo name="language" style={styles.actionButtonIcon} />
+                <Entypo name="book" style={styles.actionButtonIcon} />
               </ActionButton.Item>
               <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='blue' title="Notifications" onPress={() => this.setState({ modalVisibleWorkExpierience: true })}>
-                <IconButton name="ios-attach" style={styles.actionButtonIcon} />
+                <FontAwesome name="suitcase" style={styles.actionButtonIcon} />
               </ActionButton.Item>
               <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='yellow' title="All Tasks" onPress={() => this.setState({ modalVisibleHobby: true })}>
-                <IconButton name="ios-attach" style={styles.actionButtonIcon} />
+                <FontAwesome5 name="dumbbell" style={styles.actionButtonIcon} />
               </ActionButton.Item>
               <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='cyan' title="All Tasks" onPress={() => this.setState({ modalVisibleLanguage: true })}>
-                <IconButton name="ios-attach" style={styles.actionButtonIcon} />
+                <Entypo name="language" style={styles.actionButtonIcon} />
               </ActionButton.Item>
               <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='purple' title="All Tasks" onPress={() => this.setState({ modalVisibleCourse: true })}>
-                <IconButton name="ios-attach" style={styles.actionButtonIcon} />
+                <MaterialCommunityIcons name="certificate" style={styles.actionButtonIcon} />
               </ActionButton.Item>
               <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='red' title="All Tasks" onPress={() => this.setState({ modalVisibleSkill: true })}>
-                <IconButton name="ios-attach" style={styles.actionButtonIcon} />
+                <FontAwesome name="html5" style={styles.actionButtonIcon} />
               </ActionButton.Item>
             </ActionButton>
           </View>

@@ -3,7 +3,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createAppContainer } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import CVListScreen from '../CVListScreen';
-import CVModifyScreen from '../CVModifyScreen';
 import PortfolioListScreen from '../PortfolioListScreen';
 import PortfolioModifyScreen from '../PortfolioModifyScreen';
 import UserHomeScreen from '../UserHomeScreen';
@@ -12,7 +11,6 @@ const TabNavigator = createMaterialBottomTabNavigator(
   {
     'Home Screen': UserHomeScreen,
     'Resumes': CVListScreen,
-    'Modify Resumes': CVModifyScreen,
     'Portfolio': PortfolioListScreen,
     'Modify Portfolio': PortfolioModifyScreen,
   },
@@ -26,8 +24,6 @@ const TabNavigator = createMaterialBottomTabNavigator(
           iconName = `ios-home`;
         } else if (routeName === 'Resumes') {
           iconName = `ios-planet`;
-        } else if (routeName === 'Modify Resumes') {
-          iconName = `ios-photos`;
         } else if (routeName === 'Portfolio') {
           iconName = `ios-book`;
         } else if (routeName === 'Modify Portfolio') {
