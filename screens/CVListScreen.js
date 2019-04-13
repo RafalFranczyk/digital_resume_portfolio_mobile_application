@@ -38,10 +38,26 @@ export default class CVListScreen extends Component {
       .then((responseJson) => {
         console.log(responseJson.statusCode);
         if (responseJson.statusCode === '200') {
-          this.setState({
-            isLoading: false,
-            dataSource: responseJson.resumes,
-          })
+          if (responseJson.resumes == 'null') {
+            this.setState({
+              isLoading: false,
+              dataSource: [],
+            })
+          } else {
+            this.setState({
+              isLoading: false,
+              dataSource: responseJson.resumes,
+            })
+          }
+        }
+        if (this.state.dataSource == null) {
+          console.log("jest 1")
+        } else if (this.state.dataSource == 'null') {
+          console.log("jest 2")
+        } else if (this.state.dataSource === null) {
+          console.log("jest 3")
+        } else {
+          console.log("zadne")
         }
         console.log(this.state.dataSource)
       })
@@ -153,7 +169,6 @@ export default class CVListScreen extends Component {
   }
 
   render() {
-
     if (this.state.isLoading) {
       return (
         <View style={[styles.container1, styles.horizontal]}>

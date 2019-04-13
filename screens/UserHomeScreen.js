@@ -3,7 +3,7 @@ import { AsyncStorage, BackHandler, Image, ScrollView, StyleSheet, Text, ToastAn
 import { Navigation } from 'react-native-navigation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import { Avatar } from 'react-native-elements';
 
 export default class UserHomeScreen extends Component {
   constructor() {
@@ -71,7 +71,12 @@ export default class UserHomeScreen extends Component {
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Image source={require('../img/userPicture.jpg')} style={{ width: 100, height: 100, borderRadius: 50, marginTop: 20 }} />
+          <Avatar
+            source={require('../img/userPicture.jpg')} style={{ width: 100, height: 100, marginTop: 20 }}
+            showEditButton
+            size="large"
+            rounded
+          />
         </View>
         <View>
           <Text style={styles.welcome}>Hello User</Text>

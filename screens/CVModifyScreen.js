@@ -1161,6 +1161,8 @@ export default class CVModifyScreen extends Component {
   onCloseEducationUpdate = () => this.setState({ modalVisibleEducationUpdate: false })
   onCloseWorkExperienceUpdate = () => this.setState({ modalVisibleWorkExperienceUpdate: false })
 
+
+
   render() {
     if (this.state.isLoading) {
       return (
@@ -2560,22 +2562,22 @@ export default class CVModifyScreen extends Component {
 
           <View style={styles.ActionButton}>
             <ActionButton buttonColor="rgba(231,76,60,1)">
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='green' onPress={() => this.setState({ modalVisibleEducation: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='green' size={60} onPress={() => this.setState({ modalVisibleEducation: true })}>
                 <Entypo name="book" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='blue' onPress={() => this.setState({ modalVisibleWorkExpierience: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='blue' size={60} onPress={() => this.setState({ modalVisibleWorkExpierience: true })}>
                 <FontAwesome name="suitcase" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='yellow' onPress={() => this.setState({ modalVisibleHobby: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='yellow' size={60} onPress={() => this.setState({ modalVisibleHobby: true })}>
                 <FontAwesome5 name="dumbbell" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='cyan' onPress={() => this.setState({ modalVisibleLanguage: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='cyan' size={60} onPress={() => this.setState({ modalVisibleLanguage: true })}>
                 <Entypo name="language" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='purple' onPress={() => this.setState({ modalVisibleCourse: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='purple' size={60} onPress={() => this.setState({ modalVisibleCourse: true })}>
                 <MaterialCommunityIcons name="certificate" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='red' onPress={() => this.setState({ modalVisibleSkill: true })}>
+              <ActionButton.Item style={styles.actionButtonItemIcon} buttonColor='red' size={60} onPress={() => this.setState({ modalVisibleSkill: true })}>
                 <FontAwesome name="html5" style={styles.actionButtonIcon} />
               </ActionButton.Item>
             </ActionButton>
@@ -2602,6 +2604,7 @@ const styles = StyleSheet.create({
   CardView: {
     zIndex: 0,
   },
+
   ActionButton: {
     paddingTop: 200,
     zIndex: 1,
@@ -2613,8 +2616,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
+    fontSize: 35,
     color: 'white',
     zIndex: 100,
   },
