@@ -17,9 +17,9 @@ export default class CVListScreen extends Component {
       dataSource: [],
       name: '',
       description: '',
-      summary:'',
-      githubLink:'',
-      linkedInLink:'',
+      summary: '',
+      githubLink: '',
+      linkedInLink: '',
       modalVisible: false,
     };
   }
@@ -67,7 +67,6 @@ export default class CVListScreen extends Component {
   };
 
   addResume = () => {
-    onClose = () => this.setState({ modalVisible: false });
     console.log('token' + tokenAsync)
     fetch('http://www.server-digital-resume-portfolio.pl/resume', {
       method: 'POST',
@@ -79,13 +78,16 @@ export default class CVListScreen extends Component {
       body: JSON.stringify({
         name: this.state.name,
         description: this.state.description,
-        summary:this.state.summary,
-        githubLink:this.state.githubLink,
-        linkedInLink:this.state.linkedInLink,
+        summary: this.state.summary,
+        githubLink: this.state.githubLink,
+        linkedInLink: this.state.linkedInLink,
       })
     }).then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.statusCode === '200') {
+          this.setState({
+            modalVisible: false,
+          })
           this.componentDidMount(),
             ToastAndroid.show('Add new Resumes :)', ToastAndroid.SHORT);
         } else if (responseJson.status === '500') {
@@ -102,17 +104,16 @@ export default class CVListScreen extends Component {
   alertAddResume = () => this.setState({ modalVisible: true });
 
   onClick(event) {
-    this.onClose();
     this.addResume();
   }
 
-  modifyScreen = (value) =>{
-    AsyncStorage.setItem('resumeID', String (value));
+  modifyScreen = (value) => {
+    AsyncStorage.setItem('resumeID', String(value));
     this.newScreen('CVModifyScreen');
   }
 
   handlerLongClick = (value) => {
-    AsyncStorage.setItem('resumeID', String (value));
+    AsyncStorage.setItem('resumeID', String(value));
     Alert.alert(
       'Delete Resume',
       'Are you sure ? ',
@@ -152,6 +153,7 @@ export default class CVListScreen extends Component {
   }
 
   render() {
+
     if (this.state.isLoading) {
       return (
         <View style={[styles.container1, styles.horizontal]}>
@@ -335,14 +337,14 @@ export default class CVListScreen extends Component {
                       {item.description}
                     </Text>
                     <Button
-                      onPress = {() => this.modifyScreen(item.id)}
+                      onPress={() => this.modifyScreen(item.id)}
                       icon={<Icon name='code' color='#ffffff' />}
                       backgroundColor='#03A9F4'
                       buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
                       title='VIEW NOW' />
                   </Card>
                 </TouchableOpacity>}
-              keyExtractor={(item, index) => index}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
         </ScrollView>
@@ -354,6 +356,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  container1: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
   },
   iconAddResumes: {
     marginTop: 12,

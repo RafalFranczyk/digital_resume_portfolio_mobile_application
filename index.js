@@ -1,6 +1,6 @@
 import { Navigation } from "react-native-navigation";
 import App from './App';
-
+import { YellowBox } from "react-native";
 import Regulations from './screens/Regulations';
 import Login from './screens/Login';
 import Registration from './screens/Registration';
@@ -26,11 +26,11 @@ Navigation.registerComponent('routesUser', () => routesUser);
 Navigation.registerComponent('AdminHomeScreen', () => AdminHomeScreen);
 Navigation.registerComponent('routesAdmin', () => routesAdmin);
 Navigation.registerComponent('EditProfileScreen', () => EditProfileScreen);
-Navigation.registerComponent('UpdateProfileScreen',() => UpdateProfileScreen);
-Navigation.registerComponent('CVListScreen',() => CVListScreen);
+Navigation.registerComponent('UpdateProfileScreen', () => UpdateProfileScreen);
+Navigation.registerComponent('CVListScreen', () => CVListScreen);
 Navigation.registerComponent('PortfolioListScreen', () => PortfolioListScreen);
-Navigation.registerComponent('PortfolioModifyScreen',()=> PortfolioModifyScreen)
-Navigation.registerComponent('CVModifyScreen',() => CVModifyScreen);
+Navigation.registerComponent('PortfolioModifyScreen', () => PortfolioModifyScreen)
+Navigation.registerComponent('CVModifyScreen', () => CVModifyScreen);
 
 console.disableYellowBox = true;
 Navigation.events().registerAppLaunchedListener(() => {
@@ -51,26 +51,26 @@ Navigation.events().registerAppLaunchedListener(() => {
     }
   });
   Navigation.setRoot({
-        root: {
-          stack: {
-            id: 'MAIN_STACK',
-            children: [
-              {
-                component: {
-                  name: 'App',
-                }
-              },
-            ]
-          },
-          id:'PortFolio_Name',
-          children:[
-            {
-              component:{
-                name:'Registration',
-              }
+    root: {
+      stack: {
+        id: 'MAIN_STACK',
+        children: [
+          {
+            component: {
+              name: 'App',
             }
-          ]
-        }
+          },
+        ]
       },
+      id: 'PortFolio_Name',
+      children: [
+        {
+          component: {
+            name: 'Registration',
+          }
+        }
+      ]
+    }
+  },
   );
 });
