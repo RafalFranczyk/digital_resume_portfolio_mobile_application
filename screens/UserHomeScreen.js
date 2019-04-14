@@ -4,6 +4,13 @@ import { Navigation } from 'react-native-navigation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { Avatar } from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
+
+const options = {
+  title: 'My Picture App',
+  takePhotoButtonTitle: 'Take Photo from camera',
+  chooseFromLibraryButtonTitle: 'Take Photo from gallery',
+}
 
 export default class UserHomeScreen extends Component {
   constructor() {
@@ -13,10 +20,15 @@ export default class UserHomeScreen extends Component {
     this.state = {
       isLoading: true,
       dataSource: null,
+      userData: '',
+      source: {
+        uri: '',
+      },
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    tokenAsync = await AsyncStorage.getItem('token');
     this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
       if (this.lastBackButtonPress + 2000 >= new Date().getTime()) {
         BackHandler.exitApp();
@@ -57,6 +69,50 @@ export default class UserHomeScreen extends Component {
     ToastAndroid.show('go do it  :)', ToastAndroid.SHORT)
   }
 
+  choosePhoto = () => {
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        this.setState({
+          source: { uri: response.uri },
+        });
+
+        console.log(this.state.source.uri)
+
+        let formdata = new FormData();
+        formdata.append("file", { uri: this.state.source.uri, name: 'image.jpg', type: 'multipart/form-data' })
+
+        return fetch('http://www.server-digital-resume-portfolio.pl/profile/photo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + tokenAsync
+          },
+          body: formdata
+        }).then((response) => response.json())
+          .then((responseJson) => {
+            console.log("1 " + responseJson)
+            if(responseJson.statusCode === '200'){
+              console.log("Udalo sie")
+            }else{
+              console.log("nie udalo sie")
+              console.log("Code " + responseJson.statusCode)
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+      }
+    });
+  };
+
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -72,7 +128,8 @@ export default class UserHomeScreen extends Component {
 
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Avatar
-            source={require('../img/userPicture.jpg')} style={{ width: 100, height: 100, marginTop: 20 }}
+            source={this.state.source} style={{ width: 100, height: 100, marginTop: 20 }}
+            onPress={() => this.choosePhoto()}
             showEditButton
             size="large"
             rounded
