@@ -30,6 +30,7 @@ export default class CVModifyScreen extends Component {
       modalVisibleHobbyUpdate: false,
       modalVisibleEducationUpdate: false,
       modalVisibleWorkExperienceUpdate: false,
+      modalVisibleDetailUpdate: false,
       toPresent: false,
       isLoading: true,
       workExperiencePresent: false,
@@ -93,6 +94,11 @@ export default class CVModifyScreen extends Component {
       getWorkExperienceWorkTitle: '',
       getWorkExperienceWorkDescription: '',
       workExperienceId: 0,
+      getNameDetail: '',
+      getDescriptionDetail: '',
+      getSummaryDetail: '',
+      getGithubLinkDetail: '',
+      getLinkedInLinkDetail: '',
     };
   }
   async componentDidMount() {
@@ -854,6 +860,96 @@ export default class CVModifyScreen extends Component {
     } else { ToastAndroid.show('Enter Start Date', ToastAndroid.SHORT); }
   }
 
+  handlerLongClickDetail = () => {
+    Alert.alert(
+      'Update Detail',
+      'Are you sure ? ',
+      [
+        {
+          text: 'Modify',
+          onPress: () =>
+            this.getDetail()
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
+  getDetail = () => {
+    return fetch('http://www.server-digital-resume-portfolio.pl/resume?id=' + resumeID, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + tokenAsync
+      }
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.statusCode);
+        console.log(responseJson.resume);
+        if (responseJson.statusCode === '200') {
+          this.setState({
+            getNameDetail: responseJson.resume.name,
+            getDescriptionDetail: responseJson.resume.description,
+            getSummaryDetail: responseJson.resume.summary,
+            getGithubLinkDetail: responseJson.resume.githubLink,
+            getLinkedInLinkDetail: responseJson.resume.linkedInLink,
+            modalVisibleDetailUpdate: true,
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+  modifyDetail = () => {
+    const { getNameDetail } = this.state;
+    const { getDescriptionDetail } = this.state;
+    const { getSummaryDetail } = this.state;
+    const { getGithubLinkDetail } = this.state;
+    const { getLinkedInLinkDetail } = this.state;
+    if (getNameDetail) {
+      if (getDescriptionDetail) {
+        if (getSummaryDetail) {
+          if (getGithubLinkDetail) {
+            if (getLinkedInLinkDetail) {
+              fetch('http://www.server-digital-resume-portfolio.pl/resume?id=' + resumeID, {
+                method: 'PUT',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + tokenAsync
+                },
+                body: JSON.stringify({
+                  name: this.state.getNameDetail,
+                  description: this.state.getDescriptionDetail,
+                  summary: this.state.getSummaryDetail,
+                  githubLink: this.state.getGithubLinkDetail,
+                  linkedInLink: this.state.getLinkedInLinkDetail,
+                })
+              }).then((response) => response.json())
+                .then((responseJson) => {
+                  if (responseJson.statusCode === '200') {
+                    this.setState({
+                      modalVisibleDetailUpdate: false
+                    })
+                    this.componentDidMount(),
+                      ToastAndroid.show('Update Resume Detail:)', ToastAndroid.SHORT);
+                  } else if (responseJson.status === '500') {
+                    ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+                  }
+                })
+                .catch((error) => {
+                  console.log(error)
+                });
+            } else { ToastAndroid.show('Enter LinkedIn Link', ToastAndroid.SHORT); }
+          } else { ToastAndroid.show('Enter GitHub Link', ToastAndroid.SHORT); }
+        } else { ToastAndroid.show('Enter Resume Summary', ToastAndroid.SHORT); }
+      } else { ToastAndroid.show('Enter Resume Description', ToastAndroid.SHORT); }
+    } else { ToastAndroid.show('Enter Resume Name', ToastAndroid.SHORT); }
+  }
+
   addEducation = () => {
     const { educationStartDate } = this.state;
     const { educationEndDate } = this.state;
@@ -1160,7 +1256,7 @@ export default class CVModifyScreen extends Component {
   onCloseCourseUpdate = () => this.setState({ modalVisibleCourseUpdate: false })
   onCloseEducationUpdate = () => this.setState({ modalVisibleEducationUpdate: false })
   onCloseWorkExperienceUpdate = () => this.setState({ modalVisibleWorkExperienceUpdate: false })
-
+  onCloseDetailUpdate = () => this.setState({ modalVisibleDetailUpdate: false })
 
 
   render() {
@@ -1187,7 +1283,9 @@ export default class CVModifyScreen extends Component {
             <FlatList
               data={[this.state.dataSource]}
               renderItem={({ item }) =>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onLongPress={() => this.handlerLongClickDetail()}
+                  activeOpacity={0.6}>
                   <Card
                     title="Resume Details">
                     <Text style={{ marginBottom: 10 }}>
@@ -1947,7 +2045,7 @@ export default class CVModifyScreen extends Component {
               <View style={styles.triangleRight} />
             </View>
             <Mybutton
-              title="Add Work Experience"
+              title="Add Work Exp"
               customClick={this.addWorkExperience.bind(this)}
             />
             <View style={styles.triangleRight} />
@@ -2559,6 +2657,164 @@ export default class CVModifyScreen extends Component {
               customClick={this.modifyWorkExperience.bind(this)}
             />
           </Overlay>
+
+          {/* Modal Detail Update */}
+
+          <Overlay visible={this.state.modalVisibleDetailUpdate} onClose={this.onCloseDetailUpdate} closeOnTouchOutside>
+            <View style={[styles.overlay, { marginTop: 10 }]}>
+              <View style={styles.triangleLeft} />
+              <Text>Enter Name Resume</Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter Resume Name"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                value={this.state.getNameDetail}
+                onChangeText={(getNameDetail) => this.setState({ getNameDetail })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Description Resume </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter resume description"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                value={this.state.getDescriptionDetail}
+                onChangeText={(getDescriptionDetail) => this.setState({ getDescriptionDetail })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter Summar Detail </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter resume summary"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                value={this.state.getSummaryDetail}
+                onChangeText={(getSummaryDetail) => this.setState({ getSummaryDetail })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter githubLink </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter github link"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                value={this.state.getGithubLinkDetail}
+                onChangeText={(getGithubLinkDetail) => this.setState({ getGithubLinkDetail })}
+              />
+              <View style={styles.triangleRight} />
+
+              <Text>Enter LinkedIn Link </Text>
+              <Input
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  borderLeftWidth: 0,
+                  width: (80 + "%"),
+                  height: 50,
+                  backgroundColor: 'white',
+                }}
+                leftIconContainerStyle={{
+                  marginRight: 10,
+                }}
+                containerStyle={{ paddingHorizontal: 0 }}
+                leftIcon={<SimpleIcon name="lock" color="black" size={25} />}
+                placeholder="Enter linkedIn link"
+                placeholderTextColor="black"
+                autoCapitalize="none"
+                keyboardAppearance="light"
+                secureTextEntry={false}
+                autoCorrect={false}
+                keyboardType="default"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                value={this.state.getLinkedInLinkDetail}
+                onChangeText={(getLinkedInLinkDetail) => this.setState({ getLinkedInLinkDetail })}
+              />
+              <View style={styles.triangleRight} />
+            </View>
+            <Mybutton
+              title="Update Detail"
+              customClick={this.modifyDetail.bind(this)}
+            />
+          </Overlay>
+
+
 
           <View style={styles.ActionButton}>
             <ActionButton buttonColor="rgba(231,76,60,1)">
