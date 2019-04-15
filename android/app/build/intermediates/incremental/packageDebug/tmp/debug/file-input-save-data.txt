@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Mar 29 14:43:26 CET 2019
+#Mon Apr 15 13:48:53 CEST 2019
 56.path=lib/armeabi/libicu_common.so
 5.base=E\:\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\0
 42.base=E\:\\digital_resume_portfolio_mobile_application\\android\\app\\build\\intermediates\\transforms\\mergeJniLibs\\debug\\0
